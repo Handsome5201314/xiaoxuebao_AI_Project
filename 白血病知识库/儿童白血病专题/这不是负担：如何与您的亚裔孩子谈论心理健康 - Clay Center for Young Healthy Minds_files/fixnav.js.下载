@@ -1,0 +1,8 @@
+console.log("load document ready");
+jQuery(document).ready(function(){
+	console.log("run document ready");
+	console.log("firstLevel show");
+
+	jQuery(".firstLevel").show();
+
+});

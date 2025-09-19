@@ -1,0 +1,244 @@
+/*
+
+Sections:
+
+- Reset
+- General
+- Buttons
+- Comment Form
+
+ */
+
+/* Reset ------------------------------------------------------------------------------------------------------------ */
+.daexthefu-container,
+.daexthefu-container * {
+    box-sizing: border-box !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+}
+
+/* General ---------------------------------------------------------------------------------------------------------- */
+.daexthefu-comment {
+    display: none;
+}
+
+.daexthefu-successful-submission-text {
+    display: none;
+    margin: 35px 0 33px !important;
+}
+
+.daexthefu-feedback {
+    display: flex;
+}
+
+.daexthefu-layout-side-by-side .daexthefu-feedback {
+    flex-direction: row !important;
+    gap: 32px !important;
+}
+
+.daexthefu-layout-stacked .daexthefu-feedback {
+    flex-direction: column !important;
+}
+
+.daexthefu-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.daexthefu-description {
+    padding: 0 !important;
+    margin: 32px 0 0 0 !important;
+}
+
+.daexthefu-alignment-left .daexthefu-description {
+    order: 2 !important;
+}
+
+.daexthefu-alignment-left .daexthefu-title,
+.daexthefu-alignment-left .daexthefu-description {
+    text-align: left !important;
+}
+
+.daexthefu-alignment-center .daexthefu-title,
+.daexthefu-alignment-center .daexthefu-description {
+    text-align: center !important;
+}
+
+.daexthefu-alignment-right .daexthefu-title,
+.daexthefu-alignment-right .daexthefu-description {
+    text-align: right !important;
+}
+
+.daexthefu-container {
+    display: flex !important;
+    flex-direction: column !important;
+    border-style: solid !important;
+}
+
+.daexthefu-image {
+    width: 100% !important;
+}
+
+.daexthefu-container .daexthefu-image.daexthefu-image-position-top {
+    order: 1 !important;
+}
+
+.daexthefu-container .daexthefu-image.daexthefu-image-position-bottom {
+    order: 4 !important;
+}
+
+.daexthefu-container .daexthefu-comment {
+    order: 3 !important;
+}
+
+/* Buttons ---------------------------------------------------------------------------------------------------------- */
+.daexthefu-button {
+    padding: 8px !important;
+    margin: 8px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    width: fit-content !important;
+}
+
+.daexthefu-buttons-container {
+    display: flex !important;
+}
+
+.daexthefu-buttons {
+    display: flex !important;
+    gap: 16px !important;
+}
+
+.daexthefu-button {
+    height: fit-content !important;
+    transition: opacity .4s !important;
+}
+
+.daexthefu-button:hover {
+    opacity: 0.7 !important;
+}
+
+.daexthefu-alignment-left .daexthefu-buttons-container {
+    justify-content: flex-start !important;
+}
+
+.daexthefu-alignment-center .daexthefu-buttons-container {
+    justify-content: center !important;
+}
+
+.daexthefu-alignment-center .daexthefu-feedback {
+    justify-content: center !important;
+}
+
+.daexthefu-alignment-right .daexthefu-feedback {
+    justify-content: right !important;
+}
+
+.daexthefu-alignment-right .daexthefu-buttons-container {
+    justify-content: flex-end !important;
+}
+
+.daexthefu-button svg{
+    width: 48px !important;
+    height: 48px !important;
+}
+
+.daexthefu-button-text {
+    height: 32px !important;
+    overflow: hidden !important;
+}
+
+.daexthefu-button-type-icon {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 48px !important;
+    height: 48px !important;
+    background: none !important;
+}
+
+.daexthefu-button-type-icon-and-text {
+    margin: 0 !important;
+    padding: 0 16px !important;
+    height: 48px !important;
+    display: flex !important;
+    gap: 16px !important;
+}
+
+.daexthefu-button-type-icon-and-text
+.daexthefu-button-icon {
+    width: 48px !important;
+    height: 48px !important;
+}
+
+.daexthefu-button-type-icon-and-text
+.daexthefu-button-text {
+    height: 48px !important;
+}
+
+.daexthefu-button-type-icon-and-text .daexthefu-icon-circle {
+    display: none !important;
+}
+
+.daexthefu-button-type-text {
+    margin: 0 !important;
+    padding: 0 16px !important;
+    height: 48px !important;
+}
+
+/* Comment Form ----------------------------------------------------------------------------------------------------- */
+.daexthefu-comment {
+    margin: 32px 0 0 !important;
+}
+
+.daexthefu-comment-label {
+    margin: 3px 0 9px !important;
+}
+
+.daexthefu-comment-top-container {
+    display: flex !important;
+}
+
+.daexthefu-comment-character-counter-container {
+    margin-left: auto !important;
+}
+
+.daexthefu-comment-character-counter-number,
+.daexthefu-comment-character-counter-text {
+    display: inline-block;
+    margin: 3px 0 9px !important;
+}
+
+.daexthefu-comment-textarea {
+    border-width: 1px !important;
+    border-style: solid !important;
+    padding: 15px !important;
+    margin: 0 0 32px !important;
+    width: 100% !important;
+    min-height: 104px !important;
+    height: 104px !important;
+    max-height: 104px !important;
+    outline: none !important;
+    transition: all 0.4s ease;
+    resize: none !important;
+}
+
+.daexthefu-comment-textarea:focus {
+    outline: none !important;
+}
+
+.daexthefu-comment-buttons-container {
+    display: flex !important;
+    gap: 16px !important;
+}
+
+.daexthefu-comment-submit,
+.daexthefu-comment-cancel {
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 16px !important;
+    overflow: hidden !important;
+    height: 48px !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+}

@@ -1,0 +1,230 @@
+// JavaScript Document
+var $ = jQuery.noConflict();
+
+jQuery(document).ready(function(){
+
+	$(".curriculum-tab").click(function(){
+	  var tab = $(this).attr('data-tab-tr');
+	  $(".curriculum-tab").removeClass('active');
+	  $(this).addClass('active');
+	  $(".curriculum-tab-body").removeClass('active');
+	  $(".curriculum-tab-body[data-tab="+ tab +"]").addClass('active');
+	});
+	// Mobile Tabs
+    $(".curriculum-mobile-tab-header").click(function() {
+        var $this = $(this);
+        $this.next(".curriculum-mobile-tab-body").slideToggle();
+        $this.find(".toggle-icon").text(function(_, value) {
+            return value === '+' ? '-' : '+';
+        });
+    });
+
+	/* placeholder js */
+	$('input,textarea').placeholder();
+
+	/* home slider js */
+	var owl = $('.home-slider');
+	var items_ = owl.find(".item").length > 1 ? true : false;
+	owl.owlCarousel({
+		nav: items_
+		, items: 1
+		// , loop: items_
+		// , mouseDrag: false
+		// , touchDrag: false
+		// , autoplay: false
+		// , autoplayHoverPause:false
+		// , autoplayTimeout:7000
+		, smartSpeed: 1500
+	});
+
+	/*custom select home slider js */
+  	$("#RecentPosts").selectbox();
+  	$("#TrendingPosts").selectbox();
+  	$("#DisorderPosts").selectbox();
+  	$(".custom-select").selectbox().change(
+  		function () {
+		    window.location.href = $(this).val();
+		}
+	);  	
+
+	headerOuterHeight_ = $(".header-main").outerHeight();
+    var Obj_ = $("<div>", {
+        class: "blankDiv"
+    }).height(headerOuterHeight_).hide().insertAfter($(".header-main"));
+	stickyHeader();
+
+	/* form js */
+	 $("#newsltrform").validate({
+        ignore: [],
+        rules: {
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        errorClass: 'error',
+        validClass: 'valid',
+        errorElement: 'div',
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass(errorClass).addClass(validClass);
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        submitHandler: function (form) {
+            $('#newsltrform .successmsg').fadeIn();
+            setTimeout(function () {
+                $('#newsltrform .successmsg').fadeOut();
+                $('#newsltrform')[0].reset();
+                $(".valid").removeClass("valid");
+            }, 3000)
+            return false;
+        }
+    });
+
+	$(function(){
+		function show_popup(){
+			$('.enumenu_ul').responsiveMenu({
+				'menuIcon_text': '',
+				onMenuopen: function () {}
+			});
+		};
+		window.setTimeout( show_popup, 50 ); // 1 seconds
+	});
+	$(function(){
+		$(".m_item").removeClass("active");
+		if (window.page_title)$(window.page_title).addClass("active");
+	});
+});
+
+/* equalHeight js */
+(function ($) {
+	$.fn.equalHeight = function (option) {
+		var $this = this
+		var get_height = function () {
+			setTimeout(function () {
+				var maxheight = 0;
+				$this.css("height", "")
+				$this.each(function () {
+					maxheight = $(this).height() > maxheight ? $(this).height() : maxheight;
+				})
+				$this.height(maxheight)
+			}, 501);
+		}
+		var init = function () {
+			get_height()
+			$(window).bind("resize", get_height)
+		}
+		$this.destroy = function () {
+			$this.css("height", "")
+			$(window).unbind("resize", get_height)
+		}
+		init()
+		return this
+	}
+})(jQuery)
+
+$(window).scroll(function () {
+	stickyHeader();
+});
+
+// $(window).load(function () {
+// 	$(".artcl h4").equalHeight();
+// 	$(".article h4").equalHeight();
+// 	$(".teamlist li .teaminfolist").equalHeight();
+// 	$(".top-cat .top-catlist h4").equalHeight();
+// 	$(".abtus-sec .left-abtinfo .abtinfo,.abtus-sec .twininfo").equalHeight();
+// 	setHeight();
+// 	stickyHeader();
+// });
+
+// $(window).resize(function () {
+// 	 headerOuterHeight_ = $(".header-main").outerHeight();
+//     $(".blankDiv").height(headerOuterHeight_)
+// 	setHeight();
+// 	stickyHeader();
+
+// });
+
+// function setHeight() {
+// 	var leftHeight = $(".leftlist .artcl").outerHeight();
+// 	$(".rightlist .artclbig").css("height", (leftHeight * 2) + 24);
+// }
+
+/* video js */
+    $('.play-btn img').on('click', function (ev) {
+        $("#video")[0].src += "&autoplay=1";
+        ev.preventDefault();
+        $(".play-btn").fadeOut();
+    });
+
+function stickyHeader() {
+    if ($(window).scrollTop() > headerOuterHeight_) {
+        //$("header").addClass("sticky");
+    } else {
+        //$("header").removeClass("sticky");
+    }
+}
+
+
+// The "Upload" button
+$('.upload_image_button').click(function() {
+    var send_attachment_bkp = wp.media.editor.send.attachment;
+    var button = $(this);
+    wp.media.editor.send.attachment = function(props, attachment) {
+        $(button).parent().prev().attr('src', attachment.url);
+        $(button).prev().val(attachment.id);
+        wp.media.editor.send.attachment = send_attachment_bkp;
+    }
+    wp.media.editor.open(button);
+    return false;
+});
+
+jQuery(document).ready(function(){
+	// The "Remove" button (remove the value from input type='hidden')
+	$('.remove_image_button').click(function() {
+		var answer = confirm('Are you sure?');
+		if (answer == true) {
+			var src = $(this).parent().prev().attr('data-src');
+			$(this).parent().prev().attr('src', src);
+			$(this).prev().prev().val('');
+		}
+		return false;
+	});
+});
+
+
+jQuery(document).ready(function(){
+	$(function() {
+		// $('ul.top_arcticlelist li').matchHeight();
+	});
+	$(function() {
+		// $('ul.bottom_arcticlelist li').matchHeight();
+	});
+});
+
+$(function() {
+  var b = $("#social-show");
+  var w = $("#social-wrapper");
+  var l = $("#social-list");
+  
+  w.height(0);
+
+  b.click(function() {
+  
+    if(w.hasClass('open')) {
+      b.removeClass('open');
+      w.removeClass('open');
+      //w.height(0);
+    } else {
+      b.addClass('open');
+      w.addClass('open');
+      //w.height(l.outerHeight(true));
+    }
+  
+  });
+});
+

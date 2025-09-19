@@ -45,6 +45,9 @@
 
 ### 快速开始
 
+# 🔥 真正的一键部署 - 无需任何配置
+curl -fsSL https://raw.githubusercontent.com/Handsome5201314/xiaoxuebao_AI_Project/main/xiaoxuebao-docker/scripts/install.sh | bash
+
 1. **克隆仓库**
 ```bash
 git clone https://github.com/Handsome5201314/xiaoxuebao_AI_Project.git

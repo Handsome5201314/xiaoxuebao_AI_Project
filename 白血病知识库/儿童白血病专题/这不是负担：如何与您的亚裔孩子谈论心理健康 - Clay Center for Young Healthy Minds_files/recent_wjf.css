@@ -1,0 +1,124 @@
+.top_arcticlelist li:nth-child(1){width:33.333%;padding:0 12px 0 0;}
+.top_arcticlelist li:nth-child(2){width:66.666%;padding:0 0 0 12px;}
+.bottom_arcticlelist li:nth-child(1){width:66.6666%;padding:0 12px 0 0;}
+.bottom_arcticlelist li:nth-child(2){width:33.333%;padding:0 0 0 12px;}
+
+.article a.text-right-link{height:40px;}
+
+.bottom-title h3{
+	height:70px;
+}
+
+ul.top_arcticlelist{
+	/* margin-bottom:30px; */
+}
+ul.bottom_arcticlelist{
+	/* margin-bottom:30px; */
+}
+
+
+/*------------mobile landscape  view------*/
+@media (max-width: 820px) {
+	.top_arcticlelist li{width: 100%; float: none;}
+	.top_arcticlelist li{padding: 0;}
+	.top_arcticlelist li:nth-child(1),.top_arcticlelist li:nth-child(2){width: 100%; float: none;padding: 0;}
+
+	.bottom_arcticlelist li{width: 100%; float: none;}
+	.bottom_arcticlelist li{padding: 0;}
+	.bottom_arcticlelist li:nth-child(1),.bottom_arcticlelist li:nth-child(2){width: 100%; float: none;padding: 0;}
+	/*.top_arcticlelist li,.bottom_arcticlelist li{width: 100%; float: none;}
+	.top_arcticlelist li,.bottom_arcticlelist li{padding: 0;}
+	.top_arcticlelist li:nth-child(1).top_arcticlelist li:nth-child(2),
+	.bottom_arcticlelist li:nth-child(1),.bottom_arcticlelist li:nth-child(2){width: 100%; float: none;padding: 0;}*/
+	.bottom-title h3{height:35px;}
+
+	ul.top_arcticlelist{ margin-bottom:0;}
+	ul.bottom_arcticlelist{margin-bottom:0;}
+}
+
+.staff-block-txt{display:-webkit-flex;display:-moz-flex;display:-ms-flex;display:-o-flex;display:flex;-webkit-flex-wrap:wrap;-moz-flex-wrap:wrap;-ms-flex-wrap:wrap;-o-flex-wrap:wrap;flex-wrap:wrap;}
+.staff-block-txt figure{margin:0;}
+.staff-block-txt figure a{width:51px;height:51px;border-radius:100%; display: inline-block; background-repeat: no-repeat; background-position: center; background-size: cover;}
+
+.contri-social a {
+    font-family: 'Helvetica-Bold';
+    font-weight: normal;
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 50px;
+    position: relative;
+    min-width: 138px;
+    padding: 11px 15px 11px 44px;
+    margin: 0 2px 0 0;
+}
+.contri-social a.instagramlink {
+    background-color: #008f6b;
+}
+/* Was this helpful */
+.helpful-block-content {
+	background-color: #ffc709 !important;
+	color: #FFF !important;
+	padding: 0 !important;
+	border: none !important;
+}
+
+.helpful-block-content ul li {
+	display: block !important;
+}
+
+.aboutmain .helpful-block-content ul,
+.aboutmain .helpful-block-content ul li {
+	list-style: none;
+	padding: 0;
+}
+
+.aboutmain .helpful-block-content ul li {
+	background-color: #ffb309;
+	padding: 1rem;
+	margin-bottom: 0;
+	font-family: 'Roboto Slab', serif;
+	font-weight: 700;
+	margin: 0 !important;
+}
+
+.aboutmain .helpful-block-content ul li:last-child {
+	background-color: #ffc709;
+}
+
+.aboutmain .helpful-block-content ul li a {
+	background-color: #000;
+	display: inline-block;
+	vertical-align: top;
+	color: #ffffff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	text-align: center;
+	line-height: 1;
+	min-width: 75px;
+	padding: 16px;
+	margin: 0 0 0 12px;
+	border-radius: 50px;
+	background-size: 22px;
+	background-position: 20px center;
+}
+
+.aboutmain .helpful-block-content ul li a:last-child {
+	background-color: #e83a3a;
+}
+p.wth-success {
+	padding: 20px !important;
+}
+
+.helpful-block-content .wth-submit {
+	border: none !important;
+	padding: 10px 25px !important;
+	border-radius: 50px !important;
+}
+
+.helpful-block-content ul li textarea.wth-message {
+	padding: 5px 10px !important;
+}

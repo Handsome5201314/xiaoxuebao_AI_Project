@@ -1,0 +1,346 @@
+name: 小雪宝AI助手 CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: xiaoxuebao/api
+
+jobs:
+  # 代码质量检查
+  code-quality:
+    runs-on: ubuntu-latest
+    name: 代码质量检查
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install black isort flake8 mypy bandit safety
+    
+    - name: 代码格式检查 (Black)
+      run: black --check --diff app/
+    
+    - name: 导入排序检查 (isort)
+      run: isort --check-only --diff app/
+    
+    - name: 代码风格检查 (flake8)
+      run: flake8 app/ --max-line-length=88 --extend-ignore=E203,W503
+    
+    - name: 类型检查 (mypy)
+      run: mypy app/ --ignore-missing-imports
+    
+    - name: 安全检查 (bandit)
+      run: bandit -r app/ -f json -o bandit-report.json
+    
+    - name: 依赖安全检查 (safety)
+      run: safety check --json --output safety-report.json
+    
+    - name: 上传安全报告
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  # 单元测试
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: 单元测试
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-asyncio httpx
+    
+    - name: 运行测试
+      env:
+        DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+        REDIS_URL: redis://localhost:6379/0
+        TESTING: true
+      run: |
+        python -m pytest tests/ \
+          --cov=app \
+          --cov-report=xml \
+          --cov-report=html \
+          --cov-report=term-missing \
+          --junitxml=test-results.xml \
+          -v
+    
+    - name: 上传覆盖率报告到Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+    
+    - name: 上传测试结果
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: |
+          test-results.xml
+          htmlcov/
+          coverage.xml
+
+  # 集成测试
+  integration-tests:
+    runs-on: ubuntu-latest
+    name: 集成测试
+    needs: [unit-tests]
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: 构建测试镜像
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        target: production
+        tags: xiaoxuebao-api:test
+        load: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: 运行集成测试
+      run: |
+        docker-compose -f docker-compose.test.yml up -d
+        sleep 30
+        docker-compose -f docker-compose.test.yml exec -T xiaoxuebao-api python -m pytest tests/integration/ -v
+        docker-compose -f docker-compose.test.yml down
+
+  # 构建和推送Docker镜像
+  build-and-push:
+    runs-on: ubuntu-latest
+    name: 构建和推送镜像
+    needs: [code-quality, unit-tests, integration-tests]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 设置Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: 登录到容器注册表
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: 提取元数据
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: 构建和推送镜像
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        target: production
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        platforms: linux/amd64,linux/arm64
+
+  # 部署到开发环境
+  deploy-dev:
+    runs-on: ubuntu-latest
+    name: 部署到开发环境
+    needs: [build-and-push]
+    if: github.ref == 'refs/heads/develop'
+    environment: development
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 部署到开发服务器
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.DEV_HOST }}
+        username: ${{ secrets.DEV_USERNAME }}
+        key: ${{ secrets.DEV_SSH_KEY }}
+        script: |
+          cd /opt/xiaoxuebao
+          git pull origin develop
+          docker-compose pull
+          docker-compose up -d --remove-orphans
+          docker system prune -f
+
+  # 部署到生产环境
+  deploy-prod:
+    runs-on: ubuntu-latest
+    name: 部署到生产环境
+    needs: [build-and-push]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 部署到生产服务器
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.PROD_HOST }}
+        username: ${{ secrets.PROD_USERNAME }}
+        key: ${{ secrets.PROD_SSH_KEY }}
+        script: |
+          cd /opt/xiaoxuebao
+          git pull origin main
+          docker-compose -f docker-compose.prod.yml pull
+          docker-compose -f docker-compose.prod.yml up -d --remove-orphans
+          docker system prune -f
+    
+    - name: 健康检查
+      run: |
+        sleep 60
+        curl -f ${{ secrets.PROD_URL }}/health || exit 1
+
+  # 性能测试
+  performance-tests:
+    runs-on: ubuntu-latest
+    name: 性能测试
+    needs: [deploy-dev]
+    if: github.ref == 'refs/heads/develop'
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 安装k6
+      run: |
+        sudo gpg -k
+        sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update
+        sudo apt-get install k6
+    
+    - name: 运行性能测试
+      run: |
+        k6 run tests/performance/load-test.js
+    
+    - name: 上传性能测试结果
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: performance-results
+        path: performance-results.json
+
+  # 安全扫描
+  security-scan:
+    runs-on: ubuntu-latest
+    name: 安全扫描
+    needs: [build-and-push]
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 运行Trivy漏洞扫描
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: 上传Trivy扫描结果到GitHub Security
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # 通知
+  notify:
+    runs-on: ubuntu-latest
+    name: 通知
+    needs: [deploy-prod, deploy-dev]
+    if: always()
+    
+    steps:
+    - name: 发送部署通知
+      uses: 8398a7/action-slack@v3
+      if: always()
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow

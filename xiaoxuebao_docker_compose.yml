@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  # 前端服务
+  frontend:
+    build:
+      context: ./frontend/web-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+
+  # API网关
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - DATABASE_URL=postgresql://xiaoxuebao:password@db:5432/xiaoxuebao_db
+      - REDIS_URL=redis://redis:6379
+      - LLM_API_KEY=${LLM_API_KEY}
+    depends_on:
+      - db
+      - redis
+      - knowledge-service
+    restart: unless-stopped
+
+  # 知识服务
+  knowledge-service:
+    build:
+      context: ./services/knowledge-service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONPATH=/app
+      - DATABASE_URL=postgresql://xiaoxuebao:password@db:5432/xiaoxuebao_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+
+  # 数据库
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=xiaoxuebao_db
+      - POSTGRES_USER=xiaoxuebao
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Redis缓存
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # Nginx反向代理
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - api-gateway
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    driver: bridge

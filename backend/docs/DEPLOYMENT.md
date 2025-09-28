@@ -31,8 +31,8 @@
 
 ### 1. 克隆项目
 ```bash
-git clone https://github.com/Handsome5201314/xiaoxuebao_AI_Project.git
-cd xiaoxuebao_AI_Project/backend
+git clone https://github.com/xiaoxuebao/xiaoxuebao-ai.git
+cd xiaoxuebao-ai/backend
 ```
 
 ### 2. 创建虚拟环境
@@ -46,6 +46,33 @@ venv\Scripts\activate     # Windows
 ### 3. 安装依赖
 ```bash
 pip install -r requirements.txt
+```
+
+### 4. 配置环境变量
+```bash
+# 复制环境变量模板
+cp .env.example .env
+
+# 编辑环境变量文件
+nano .env
+```
+
+### 5. 初始化数据库
+```bash
+# 运行数据库迁移
+alembic upgrade head
+
+# 创建初始数据
+python scripts/init_data.py
+```
+
+### 6. 启动开发服务器
+```bash
+# 启动API服务
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+# 或使用脚本启动
+python run_dev.py
 ```
 
 ### 4. 配置环境变量

@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小雪宝AI助手 - 白血病AI关爱平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#667eea',
+                        secondary: '#764ba2',
+                        accent: '#ff7b9c',
+                        success: '#52c41a',
+                        warning: '#faad14',
+                        error: '#ff4d4f',
+                        info: '#1890ff',
+                        light: '#f5f5f5',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .bg-gradient {
+                background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+    </style>
+    
+    <style>
+        /* 全局样式 */
+        body {
+            scroll-behavior: smooth;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* 交互式流程图样式 */
+        .flow-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 2s linear forwards;
+        }
+        
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+    </style>
+</head>
+<body class="bg-light font-inter text-dark">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="bg-white/90 backdrop-blur-md shadow-sm py-4 px-6 md:px-12">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-gradient">❄️ 小雪宝</div>
+                    <div class="text-lg text-gray-600 hidden md:block">白血病AI关爱助手</div>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-primary transition-custom">首页</a>
+                    <a href="#features" class="text-gray-700 hover:text-primary transition-custom">功能模块</a>
+                    <a href="#workflow" class="text-gray-700 hover:text-primary transition-custom">交互流程</a>
+                    <a href="#knowledge" class="text-gray-700 hover:text-primary transition-custom">知识库</a>
+                    <a href="#community" class="text-gray-700 hover:text-primary transition-custom">社区支持</a>
+                    <a href="#about" class="text-gray-700 hover:text-primary transition-custom">关于我们</a>
+                </div>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menu-toggle" class="md:hidden text-gray-700">
+                    <i class="fa fa-bars text-xl"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#home" class="text-gray-700 hover:text-primary transition-custom py-2">首页</a>
+                <a href="#features" class="text-gray-700 hover:text-primary transition-custom py-2">功能模块</a>
+                <a href="#workflow" class="text-gray-700 hover:text-primary transition-custom py-2">交互流程</a>
+                <a href="#knowledge" class="text-gray-700 hover:text-primary transition-custom py-2">知识库</a>
+                <a href="#community" class="text-gray-700 hover:text-primary transition-custom py-2">社区支持</a>
+                <a href="#about" class="text-gray-700 hover:text-primary transition-custom py-2">关于我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                <div class="w-full md:w-1/2 animate-fade-in">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-6 text-shadow">
+                        让科技温暖生命<br/>
+                        <span class="text-gradient">用AI点亮希望</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
+                        小雪宝是一个社区驱动、医生主导的公益AI项目，旨在为白血病患者、家属及临床医生提供智能、可靠、富有同理心的信息支持与自我管理平台。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#features" class="bg-gradient text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-custom">
+                            探索功能
+                        </a>
+                        <a href="#demo" class="bg-white text-primary border-2 border-primary px-8 py-3 rounded-lg font-medium shadow hover:shadow-md transition-custom">
+                            查看演示
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-6 mt-10">
+                        <div class="flex -space-x-3">
+                            <img src="https://picsum.photos/id/1005/100" alt="用户头像" class="w-10 h-10 rounded-full border-2 border-white"/>
+                            <img src="https://picsum.photos/id/1012/100" alt="用户头像" class="w-10 h-10 rounded-full border-2 border-white"/>
+                            <img src="https://picsum.photos/id/1027/100" alt="用户头像" class="w-10 h-10 rounded-full border-2 border-white"/>
+                            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-medium border-2 border-white">
+                                100+
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span class="font-semibold text-primary">100+</span> 医疗专家参与<br/>
+                            <span class="font-semibold text-primary">500+</span> 家庭获得帮助
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 relative animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <div class="h-8 bg-gray-100 flex items-center px-4 gap-2">
+                            <div class="w-3 h-3 rounded-full bg-error"></div>
+                            <div class="w-3 h-3 rounded-full bg-warning"></div>
+                            <div class="w-3 h-3 rounded-full bg-success"></div>
+                        </div>
+                        <img src="https://picsum.photos/id/325/600/400" alt="小雪宝AI助手界面" class="w-full h-auto"/>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-primary/10 rounded-full -z-10 blur-3xl"></div>
+                    <div class="absolute -top-6 -left-6 w-48 h-48 bg-secondary/10 rounded-full -z-10 blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心价值 -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">核心价值</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝致力于通过人工智能技术，为白血病患者提供全方位的支持和关爱
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 价值卡片1 -->
+                <div class="bg-light rounded-xl p-8 text-center feature-card transition-custom">
+                    <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-book text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">消除信息鸿沟</h3>
+                    <p class="text-gray-600">提供权威、个性化的白血病相关知识问答，帮助患者及家属理解疾病和治疗方案。</p>
+                </div>
+                
+                <!-- 价值卡片2 -->
+                <div class="bg-light rounded-xl p-8 text-center feature-card transition-custom">
+                    <div class="w-16 h-16 bg-accent/10 text-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-child text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">儿童白血病关爱</h3>
+                    <p class="text-gray-600">特别关注儿童患者，提供适龄的科普和心理支持，减轻治疗过程中的恐惧和焦虑。</p>
+                </div>
+                
+                <!-- 价值卡片3 -->
+                <div class="bg-light rounded-xl p-8 text-center feature-card transition-custom">
+                    <div class="w-16 h-16 bg-info/10 text-info rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-stethoscope text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">医生辅助工具</h3>
+                    <p class="text-gray-600">为临床医生提供高效的文献查询与知识检索工具，支持精准诊疗决策。</p>
+                </div>
+                
+                <!-- 价值卡片4 -->
+                <div class="bg-light rounded-xl p-8 text-center feature-card transition-custom">
+                    <div class="w-16 h-16 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-heart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">公益性质</h3>
+                    <p class="text-gray-600">完全免费开源，致力于服务白血病患者群体，用科技传递温暖与希望。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能模块 -->
+    <section id="features" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">功能模块</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝提供全面的功能模块，满足白血病患者、家属及医生的多样化需求
+                </p>
+            </div>
+            
+            <!-- 功能模块选项卡 -->
+            <div class="mb-10">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="feature-tab active bg-gradient text-white px-6 py-3 rounded-lg font-medium transition-custom" data-target="tab1">
+                        智能问答系统
+                    </button>
+                    <button class="feature-tab bg-white text-primary border-2 border-primary px-6 py-3 rounded-lg font-medium transition-custom" data-target="tab2">
+                        儿童关爱模块
+                    </button>
+                    <button class="feature-tab bg-white text-primary border-2 border-primary px-6 py-3 rounded-lg font-medium transition-custom" data-target="tab3">
+                        医生专业工具
+                    </button>
+                    <button class="feature-tab bg-white text-primary border-2 border-primary px-6 py-3 rounded-lg font-medium transition-custom" data-target="tab4">
+                        个性化管理
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 功能内容区域 -->
+            <div class="feature-content active" id="tab1">
+                <div class="flex flex-col lg:flex-row items-center gap-10">
+                    <div class="w-full lg:w-1/2">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-comments text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">智能问答系统</h3>
+                                    <p class="text-gray-600">基于权威医学指南的精准知识问答</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">基于权威指南</h4>
+                                        <p class="text-gray-600 text-sm">整合NCCN、CSCO等国际国内权威诊疗指南，提供专业准确的医学知识。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">多白血病亚型支持</h4>
+                                        <p class="text-gray-600 text-sm">覆盖ALL、AML、CLL、CML等多种白血病类型，提供针对性的信息和建议。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">内容溯源</h4>
+                                        <p class="text-gray-600 text-sm">所有回答均可溯源至具体指南和文献，确保信息的可靠性和权威性。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">智能语义理解</h4>
+                                        <p class="text-gray-600 text-sm">基于先进的自然语言处理技术，准确理解用户问题，提供精准回答。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full lg:w-1/2">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <div class="p-6 border-b">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="font-semibold">智能问答演示</h4>
+                                    <span class="text-xs text-gray-500">实时交互</span>
+                                </div>
+                                
+                                <div id="chat-container" class="space-y-4 max-h-[400px] overflow-y-auto pb-4">
+                                    <!-- 用户问题 -->
+                                    <div class="flex gap-4">
+                                        <div class="w-8 h-8 bg-gray-200 rounded-full flex-shrink-0"></div>
+                                        <div class="bg-light rounded-lg rounded-tl-none p-4 max-w-[80%]">
+                                            <p>什么是急性淋巴细胞白血病？</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- AI回答 -->
+                                    <div class="flex gap-4 justify-end">
+                                        <div class="bg-primary/10 rounded-lg rounded-tr-none p-4 max-w-[80%] text-left">
+                                            <p class="mb-2">急性淋巴细胞白血病（ALL）是一种起源于淋巴细胞的血液系统恶性肿瘤，主要特点是骨髓中异常的原始淋巴细胞大量增殖，并浸润其他组织器官。</p>
+                                            <div class="flex items-center text-xs text-gray-500 gap-2">
+                                                <i class="fa fa-book"></i>
+                                                <span>参考来源：NCCN白血病指南 2023版</span>
+                                            </div>
+                                        </div>
+                                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-robot"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 用户问题 -->
+                                    <div class="flex gap-4">
+                                        <div class="w-8 h-8 bg-gray-200 rounded-full flex-shrink-0"></div>
+                                        <div class="bg-light rounded-lg rounded-tl-none p-4 max-w-[80%]">
+                                            <p>化疗后恶心呕吐怎么办？</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- AI回答 -->
+                                    <div class="flex gap-4 justify-end">
+                                        <div class="bg-primary/10 rounded-lg rounded-tr-none p-4 max-w-[80%] text-left">
+                                            <p class="mb-2">化疗后恶心呕吐是常见的副作用，可以通过以下方式缓解：</p>
+                                            <ul class="list-disc pl-5 mb-2 text-sm">
+                                                <li>遵循医生建议使用止吐药物</li>
+                                                <li>少食多餐，避免油腻、辛辣食物</li>
+                                                <li>进食前尝试深呼吸或听轻音乐放松</li>
+                                                <li>保持充足水分，避免脱水</li>
+                                            </ul>
+                                            <div class="flex items-center text-xs text-gray-500 gap-2">
+                                                <i class="fa fa-book"></i>
+                                                <span>参考来源：肿瘤支持治疗指南</span>
+                                            </div>
+                                        </div>
+                                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-robot"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 border-t">
+                                <div class="flex gap-2">
+                                    <input id="message-input" type="text" placeholder="请输入您的问题..." class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"/>
+                                    <button id="send-button" class="bg-primary text-white p-2 rounded-lg">
+                                        <i class="fa fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-content hidden" id="tab2">
+                <div class="flex flex-col lg:flex-row items-center gap-10">
+                    <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <img src="https://picsum.photos/seed/children/600/400" alt="儿童关爱模块" class="w-full h-auto"/>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-child text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">儿童关爱模块</h3>
+                                    <p class="text-gray-600">为儿童患者提供专属的支持和关爱</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-accent/10 text-accent rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">绘本风格科普</h4>
+                                        <p class="text-gray-600 text-sm">以生动有趣的绘本风格和动画形式，向儿童解释疾病和治疗过程，减轻恐惧心理。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-accent/10 text-accent rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">家长心理支持</h4>
+                                        <p class="text-gray-600 text-sm">为家长提供心理支持和护理指导，帮助他们更好地照顾患病儿童。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-accent/10 text-accent rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">患儿情绪管理</h4>
+                                        <p class="text-gray-600 text-sm">提供专业的情绪管理技巧和活动建议，帮助儿童应对治疗过程中的情绪变化。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-accent/10 text-accent rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">康复辅助工具</h4>
+                                        <p class="text-gray-600 text-sm">提供适合儿童的康复游戏和活动，促进身体恢复和心理健康。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-content hidden" id="tab3">
+                <div class="flex flex-col lg:flex-row items-center gap-10">
+                    <div class="w-full lg:w-1/2">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="w-12 h-12 bg-info/10 text-info rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-stethoscope text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">医生专业工具</h3>
+                                    <p class="text-gray-600">为临床医生提供高效的医疗辅助功能</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-info/10 text-info rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">精细化医疗知识检索</h4>
+                                        <p class="text-gray-600 text-sm">提供专业的医学知识检索功能，支持多维度筛选和高级搜索，帮助医生快速获取所需信息。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-info/10 text-info rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">最新研究文献查询</h4>
+                                        <p class="text-gray-600 text-sm">整合国内外权威医学数据库，提供最新研究文献查询功能，帮助医生及时了解前沿进展。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-info/10 text-info rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">诊疗指南快速参考</h4>
+                                        <p class="text-gray-600 text-sm">提供NCCN、CSCO等权威指南的快速参考功能，支持关键词定位和章节跳转。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-info/10 text-info rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">病例讨论支持</h4>
+                                        <p class="text-gray-600 text-sm">提供病例讨论平台，促进医生之间的经验交流和知识共享。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full lg:w-1/2">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <img src="https://picsum.photos/id/366/600/400" alt="医生专业工具" class="w-full h-auto"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-content hidden" id="tab4">
+                <div class="flex flex-col lg:flex-row items-center gap-10">
+                    <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <img src="https://picsum.photos/id/433/600/400" alt="个性化管理" class="w-full h-auto"/>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="w-12 h-12 bg-success/10 text-success rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-user-md text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">个性化管理</h3>
+                                    <p class="text-gray-600">为用户提供定制化的服务和支持</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-success/10 text-success rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">匿名用户画像</h4>
+                                        <p class="text-gray-600 text-sm">基于治疗阶段、疾病类型等标签构建匿名用户画像，保护隐私的同时提供个性化服务。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-success/10 text-success rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">个性化内容推荐</h4>
+                                        <p class="text-gray-600 text-sm">根据用户的具体情况和需求，智能推荐相关的知识、资源和支持服务。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-success/10 text-success rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">健康提醒</h4>
+                                        <p class="text-gray-600 text-sm">提供个性化的健康提醒服务，包括治疗时间、复查日期、用药指导等。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start gap-4">
+                                    <div class="w-6 h-6 bg-success/10 text-success rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium mb-1">严格的隐私保护</h4>
+                                        <p class="text-gray-600 text-sm">采用先进的加密技术和隐私保护措施，确保用户数据安全和隐私不受侵犯。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 交互流程 -->
+    <section id="workflow" class="py-20 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">交互流程</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝提供直观、便捷的交互体验，帮助用户轻松获取所需信息和支持
+                </p>
+            </div>
+            
+            <!-- 交互式流程图 -->
+            <div class="relative max-w-4xl mx-auto">
+                <!-- 连接线 -->
+                <div class="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
+                
+                <!-- 流程步骤 -->
+                <div class="flex flex-col md:flex-row justify-between relative z-10 gap-10 md:gap-0">
+                    <!-- 步骤1 -->
+                    <div class="flex flex-col items-center text-center max-w-xs">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                            1
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">提出问题</h3>
+                        <p class="text-gray-600">用户可以通过文字输入或选择预设问题，向小雪宝提出关于白血病的疑问。</p>
+                    </div>
+                    
+                    <!-- 步骤2 -->
+                    <div class="flex flex-col items-center text-center max-w-xs">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                            2
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">智能分析</h3>
+                        <p class="text-gray-600">系统对用户问题进行智能分析，理解用户意图和需求，确定查询范围和重点。</p>
+                    </div>
+                    
+                    <!-- 步骤3 -->
+                    <div class="flex flex-col items-center text-center max-w-xs">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                            3
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">知识检索</h3>
+                        <p class="text-gray-600">系统从权威知识库中检索相关信息，包括诊疗指南、研究文献等资源。</p>
+                    </div>
+                    
+                    <!-- 步骤4 -->
+                    <div class="flex flex-col items-center text-center max-w-xs">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                            4
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">生成回答</h3>
+                        <p class="text-gray-600">系统根据检索结果生成个性化、专业的回答，并提供相关参考资料和来源。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 交互演示 -->
+            <div class="mt-20 bg-light rounded-2xl p-8 md:p-12">
+                <h3 class="text-2xl font-semibold mb-8 text-center">用户交互演示</h3>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="p-6 border-b">
+                                <h4 class="font-medium mb-4">用户操作流程</h4>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-medium mb-1">搜索知识</h5>
+                                            <p class="text-gray-600 text-sm">使用搜索框输入关键词，或通过分类浏览查找相关信息。</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-comments"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-medium mb-1">提问咨询</h5>
+                                            <p class="text-gray-600 text-sm">直接向AI助手提问，获取个性化的回答和建议。</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-bookmark"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-medium mb-1">收藏内容</h5>
+                                            <p class="text-gray-600 text-sm">将重要的信息和资源收藏起来，方便日后查阅。</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                            <i class="fa fa-share-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-medium mb-1">分享资源</h5>
+                                            <p class="text-gray-600 text-sm">将有用的信息和资源分享给其他需要的人。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="p-6 border-b">
+                                <h4 class="font-medium mb-4">响应式设计</h4>
+                                
+                                <div class="relative">
+                                    <!-- 手机预览 -->
+                                    <div class="w-48 h-96 border-8 border-gray-800 rounded-3xl mx-auto overflow-hidden">
+                                        <div class="h-6 bg-gray-800 flex justify-center">
+                                            <div class="w-20 h-2 bg-gray-700 rounded-full mt-2"></div>
+                                        </div>
+                                        <img src="https://picsum.photos/seed/mobile/200/400" alt="手机预览" class="w-full h-auto"/>
+                                    </div>
+                                    
+                                    <!-- 平板预览 -->
+                                    <div class="hidden md:block absolute top-1/2 right-0 -translate-y-1/2 w-64 h-80 border-8 border-gray-800 rounded-3xl overflow-hidden">
+                                        <div class="h-6 bg-gray-800 flex justify-center">
+                                            <div class="w-32 h-2 bg-gray-700 rounded-full mt-2"></div>
+                                        </div>
+                                        <img src="https://picsum.photos/seed/tablet/300/400" alt="平板预览" class="w-full h-auto"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 知识库 -->
+    <section id="knowledge" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">知识库</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝拥有丰富的白血病知识库，为用户提供权威、专业的医学信息
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 知识库分类1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/guide/600/300" alt="临床诊疗指南" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">临床诊疗指南</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            包含NCCN、CSCO等国际国内权威的白血病诊疗指南，提供标准化的治疗方案和临床路径。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-12-15</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">20+ 指南</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 知识库分类2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/basic/600/300" alt="白血病基础知识" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-lightbulb-o"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">白血病基础知识</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            介绍白血病的基本概念、分类、病因、症状等基础知识，帮助患者及家属了解疾病。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-11-20</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">50+ 文章</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 知识库分类3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/treatment/600/300" alt="治疗与康复" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-heartbeat"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">治疗与康复</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            提供化疗、放疗、造血干细胞移植等治疗方法的详细介绍，以及康复期的护理和注意事项。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-10-18</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">40+ 文章</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 知识库分类4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/child/600/300" alt="儿童白血病专题" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-child"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">儿童白血病专题</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            专门针对儿童白血病患者的内容，包括儿童白血病的特点、治疗方案和儿童心理支持等。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-12-05</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">30+ 文章</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 知识库分类5 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/nutrition/600/300" alt="营养与护理" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-cutlery"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">营养与护理</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            提供白血病患者的饮食建议、日常生活护理、感染预防等实用信息，帮助提高生活质量。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-11-10</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">25+ 文章</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 知识库分类6 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://picsum.photos/seed/research/600/300" alt="最新研究进展" class="w-full h-48 object-cover"/>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                <i class="fa fa-flask"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold">最新研究进展</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            汇总白血病领域的最新研究成果和进展，包括新药物、新疗法和新的分子靶点等信息。
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">更新于: 2023-12-20</span>
+                            <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">60+ 文献</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 知识库数据统计 -->
+            <div class="mt-16">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-2xl font-semibold mb-8 text-center">知识库数据统计</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- 饼图 -->
+                        <div>
+                            <h4 class="font-medium mb-4 text-center">知识库内容分布</h4>
+                            <div class="aspect-square">
+                                <canvas id="knowledgeDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- 柱状图 -->
+                        <div>
+                            <h4 class="font-medium mb-4 text-center">内容更新趋势</h4>
+                            <div class="aspect-square">
+                                <canvas id="contentUpdateChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社区支持 -->
+    <section id="community" class="py-20 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">社区支持</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝致力于构建一个温暖、互助的社区，为白血病患者及其家属提供支持和关爱
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="bg-light rounded-2xl p-8">
+                        <h3 class="text-2xl font-semibold mb-6">社区功能</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-2">患者互助小组</h4>
+                                    <p class="text-gray-600">按照不同的疾病类型和治疗阶段，建立患者互助小组，促进经验分享和情感支持。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-comments"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-2">专家在线答疑</h4>
+                                    <p class="text-gray-600">定期邀请血液科专家进行在线答疑，解答患者和家属的疑问，提供专业指导。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-2">线上科普活动</h4>
+                                    <p class="text-gray-600">组织线上科普讲座、工作坊等活动，提高患者和家属对白血病的认识和自我管理能力。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-heart"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-2">心理支持服务</h4>
+                                    <p class="text-gray-600">提供专业的心理支持服务，帮助患者和家属应对疾病带来的心理压力和情绪问题。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <img src="https://picsum.photos/id/326/600/400" alt="社区支持" class="w-full h-auto"/>
+                        
+                        <div class="p-6 bg-primary/5">
+                            <div class="flex items-center justify-between mb-6">
+                                <h4 class="font-semibold text-lg">社区活动日历</h4>
+                                <span class="bg-primary text-white text-xs px-3 py-1 rounded-full">12月</span>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-4 p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                        <span class="text-sm">12月</span>
+                                        <span class="text-lg font-bold">15日</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-medium">白血病治疗新进展讲座</h5>
+                                        <p class="text-sm text-gray-500">19:30-21:00 | 线上直播</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4 p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                        <span class="text-sm">12月</span>
+                                        <span class="text-lg font-bold">20日</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-medium">儿童白血病家长交流会</h5>
+                                        <p class="text-sm text-gray-500">15:00-16:30 | 线上会议</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4 p-3 bg-white rounded-lg shadow-sm">
+                                    <div class="w-12 h-12 bg-primary/10 text-primary rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                        <span class="text-sm">12月</span>
+                                        <span class="text-lg font-bold">25日</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-medium">心理支持小组活动</h5>
+                                        <p class="text-sm text-gray-500">20:00-21:30 | 线上小组</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">关于我们</h2>
+                <p class="text-lg text-gray-600">
+                    小雪宝是由一群充满爱心和责任感的医疗专家、技术人员和志愿者共同创建的公益项目
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="bg-white rounded-2xl shadow-xl p-8">
+                        <h3 class="text-2xl font-semibold mb-6">项目愿景</h3>
+                        
+                        <p class="text-gray-600 mb-6">
+                            小雪宝致力于通过人工智能技术，消除白血病领域的信息鸿沟，为患者、家属和医生提供可靠、专业的信息支持和服务，帮助白血病患者获得更好的治疗和生活质量。
+                        </p>
+                        
+                        <h3 class="text-2xl font-semibold mb-6">团队介绍</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/id/1005/100" alt="团队成员" class="w-16 h-16 rounded-full object-cover flex-shrink-0"/>
+                                <div>
+                                    <h4 class="font-medium mb-1">李医生</h4>
+                                    <p class="text-sm text-primary mb-2">血液科专家 | 项目发起人</p>
+                                    <p class="text-sm text-gray-600">具有20年血液科临床经验，致力于白血病的诊疗和研究工作。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/id/1012/100" alt="团队成员" class="w-16 h-16 rounded-full object-cover flex-shrink-0"/>
+                                <div>
+                                    <h4 class="font-medium mb-1">张工程师</h4>
+                                    <p class="text-sm text-primary mb-2">AI技术专家 | 技术负责人</p>
+                                    <p class="text-sm text-gray-600">专注于医疗AI应用研发，拥有丰富的大数据和机器学习经验。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4">
+                                <img src="https://picsum.photos/id/1027/100" alt="团队成员" class="w-16 h-16 rounded-full object-cover flex-shrink-0"/>
+                                <div>
+                                    <h4 class="font-medium mb-1">王护士</h4>
+                                    <p class="text-sm text-primary mb-2">护理专家 | 患者支持负责人</p>
+                                    <p class="text-sm text-gray-600">具有丰富的白血病患者护理经验，专注于提高患者生活质量。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white rounded-2xl shadow-xl p-8">
+                        <h3 class="text-2xl font-semibold mb-6">加入我们</h3>
+                        
+                        <p class="text-gray-600 mb-6">
+                            小雪宝是一个开放的公益项目，我们欢迎医疗专家、技术人员、志愿者和爱心人士加入我们的团队，共同为白血病患者提供帮助和支持。
+                        </p>
+                        
+                        <h4 class="font-semibold mb-4">急需贡献领域</h4>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            <div class="bg-light rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fa fa-stethoscope text-primary"></i>
+                                    <h5 class="font-medium">医疗专家</h5>
+                                </div>
+                                <p class="text-sm text-gray-600">知识库审核和医学指导</p>
+                            </div>
+                            
+                            <div class="bg-light rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fa fa-code text-primary"></i>
+                                    <h5 class="font-medium">技术开发</h5>
+                                </div>
+                                <p class="text-sm text-gray-600">前端/后端开发，AI模型优化</p>
+                            </div>
+                            
+                            <div class="bg-light rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fa fa-book text-primary"></i>
+                                    <h5 class="font-medium">知识库运营</h5>
+                                </div>
+                                <p class="text-sm text-gray-600">内容整理和结构化</p>
+                            </div>
+                            
+                            <div class="bg-light rounded-lg p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <i class="fa fa-heart text-primary"></i>
+                                        <h5 class="font-medium">志愿者</h5>
+                                    </div>
+                                    <p class="text-sm text-gray-600">社区运营和患者支持</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center">
+                                <a href="#contact" class="bg-gradient text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-custom">
+                                    联系我们
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">联系我们</h2>
+                <p class="text-lg text-gray-600">
+                    如果您有任何问题、建议或想加入我们的团队，请随时与我们联系
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-light rounded-2xl p-8">
+                    <h3 class="text-2xl font-semibold mb-6">联系方式</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-1">邮箱</h4>
+                                <p class="text-gray-600">contact@xiaoxuebao.org</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-weixin text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-1">微信公众号</h4>
+                                <p class="text-gray-600">小雪宝AI助手</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-github text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium mb-1">GitHub</h4>
+                                <p class="text-gray-600">github.com/xiaoxuebao-ai</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-light rounded-2xl p-8">
+                    <h3 class="text-2xl font-semibold mb-6">留言反馈</h3>
+                    
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入您的姓名"/>
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入您的邮箱"/>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">主题</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入留言主题"/>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">留言内容</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="请输入您的留言内容"></textarea>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit" class="bg-gradient text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-custom">
+                                提交留言
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold mb-6">❄️ 小雪宝</div>
+                    <p class="text-gray-400 mb-6">
+                        小雪宝是一个社区驱动、医生主导的公益AI项目，旨在为白血病患者、家属及临床医生提供智能、可靠、富有同理心的信息支持与自我管理平台。
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+                            <i class="fa fa-github"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-custom">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">快速链接</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-custom">首页</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-custom">功能模块</a></li>
+                        <li><a href="#workflow" class="text-gray-400 hover:text-white transition-custom">交互流程</a></li>
+                        <li><a href="#knowledge" class="text-gray-400 hover:text-white transition-custom">知识库</a></li>
+                        <li><a href="#community" class="text-gray-400 hover:text-white transition-custom">社区支持</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-custom">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">资源中心</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-custom">白血病指南</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-custom">研究文献</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-custom">患者故事</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-custom">科普视频</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-custom">常见问题</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">订阅更新</h4>
+                    <p class="text-gray-400 mb-4">
+                        订阅我们的通讯，获取最新的白血病研究进展和项目更新。
+                    </p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="您的邮箱地址" class="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"/>
+                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-custom">
+                            订阅
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 小雪宝AI助手. 保留所有权利.
+                </p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-500 text-sm hover:text-white transition-custom">隐私政策</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-white transition-custom">使用条款</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-white transition-custom">免责声明</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('py-4');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        });
+        
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 功能模块选项卡切换
+        const featureTabs = document.querySelectorAll('.feature-tab');
+        const featureContents = document.querySelectorAll('.feature-content');
+        
+        featureTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有选项卡的活跃状态
+                featureTabs.forEach(t => {
+                    t.classList.remove('active', 'bg-gradient', 'text-white');
+                    t.classList.add('bg-white', 'text-primary', 'border-2', 'border-primary');
+                });
+                
+                // 添加当前选项卡的活跃状态
+                tab.classList.add('active', 'bg-gradient', 'text-white');
+                tab.classList.remove('bg-white', 'text-primary', 'border-2', 'border-primary');
+                
+                // 隐藏所有内容
+                featureContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+                
+                // 显示对应内容
+                const target = tab.getAttribute('data-target');
+                const activeContent = document.getElementById(target);
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('active');
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // 知识库数据统计图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 饼图 - 知识库内容分布
+            const knowledgeDistributionCtx = document.getElementById('knowledgeDistributionChart').getContext('2d');
+            const knowledgeDistributionChart = new Chart(knowledgeDistributionCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['临床诊疗指南', '白血病基础知识', '治疗与康复', '儿童白血病专题', '营养与护理', '最新研究进展'],
+                    datasets: [{
+                        data: [20, 25, 20, 15, 10, 30],
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#ff7b9c',
+                            '#52c41a',
+                            '#faad14',
+                            '#1890ff'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 柱状图 - 内容更新趋势
+            const contentUpdateCtx = document.getElementById('contentUpdateChart').getContext('2d');
+            const contentUpdateChart = new Chart(contentUpdateCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '新增内容数量',
+                        data: [15, 25, 30, 20, 35, 45, 50],
+                        backgroundColor: '#667eea',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        
+        // 加载动画
+        window.addEventListener('load', function() {
+            const fadeElements = document.querySelectorAll('.animate-fade-in');
+            fadeElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+        
+        // 表单提交处理
+        const contactForm = document.querySelector('form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('感谢您的留言，我们会尽快回复您！');
+                contactForm.reset();
+            });
+        }
+
+        // 预设知识库回答示例
+            const knowledgeBaseResponses = {
+                '什么是急性淋巴细胞白血病': {
+                    answer: '急性淋巴细胞白血病（ALL）是一种起源于淋巴细胞的血液系统恶性肿瘤，主要特点是骨髓中异常的原始淋巴细胞大量增殖，并浸润其他组织器官。',
+                    source: 'NCCN白血病指南 2023版'
+                },
+                '化疗后恶心呕吐怎么办': {
+                    answer: '化疗后恶心呕吐是常见的副作用，可以通过以下方式缓解：\n\n• 遵循医生建议使用止吐药物\n• 少食多餐，避免油腻、辛辣食物\n• 进食前尝试深呼吸或听轻音乐放松\n• 保持充足水分，避免脱水',
+                    source: '肿瘤支持治疗指南'
+                },
+                '白血病有哪些类型': {
+                    answer: '白血病主要分为四大类型：\n\n• 急性淋巴细胞白血病（ALL）\n• 急性髓系白血病（AML）\n• 慢性淋巴细胞白血病（CLL）\n• 慢性髓系白血病（CML）\n\n每种类型又有不同的亚型和分子特征。',
+                    source: '中华医学会血液学分会'
+                },
+                '白血病的早期症状有哪些': {
+                    answer: '白血病的早期症状可能包括：\n\n• 不明原因的发热\n• 疲劳、乏力\n• 反复感染\n• 出血或瘀斑\n• 骨痛或关节痛\n• 体重减轻\n• 淋巴结肿大\n\n这些症状并非白血病特有，如有持续不适请及时就医。',
+                    source: '中国白血病防治指南'
+                }
+            };
+
+            // 获取知识库回答
+            function getFallbackAnswer(question) {
+                const lowerCaseQuestion = question.toLowerCase();
+                
+                // 查找匹配的问题
+                for (const [key, value] of Object.entries(knowledgeBaseResponses)) {
+                    if (lowerCaseQuestion.includes(key.toLowerCase())) {
+                        return {
+                            answer: value.answer,
+                            source: value.source
+                        };
+                    }
+                }
+                
+                // 如果没有匹配的问题，返回通用回答
+                return {
+                    answer: "根据我们的知识库，我们无法找到与您问题直接相关的详细信息。\n\n白血病是一种复杂的疾病，建议您咨询专业医生获取个性化的诊断和治疗建议。\n\n如果您想了解特定类型的白血病信息，例如急性淋巴细胞白血病、慢性髓系白血病等，请明确告诉我们。",
+                    source: "小雪宝AI助手知识库"
+                };
+            }
+
+            // 聊天功能交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // 获取聊天相关元素
+            const chatContainer = document.querySelector('#chat-container');
+            const messageInput = document.querySelector('#message-input');
+            const sendButton = document.querySelector('#send-button');
+
+            // 调用Qwen/Qwen3-8B模型API获取回答
+            async function callQwenModel(question) {
+                try {
+                    // 添加"思考中"状态
+                    addTypingIndicator();
+                     
+                    // 构建API请求 - 添加调试信息
+                    console.log('开始调用Qwen模型API');
+                    console.log('请求URL:', 'https://cloud.siliconflow.cn/api/v1/chat/completions');
+                    
+                    let response;
+                    try {
+                        response = await fetch('https://cloud.siliconflow.cn/api/v1/chat/completions', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer sk-hclwuosimfqpztfimjagookkkpbcqianfcihthgsvasynbrv'
+                            },
+                            body: JSON.stringify({
+                                model: 'Qwen/Qwen3-8B',
+                                messages: [
+                                    {
+                                        role: 'system',
+                                        content: '你是小雪宝AI助手，专注于白血病知识解答和支持。请结合知识库内容，用通俗易懂的语言回答用户问题。如果涉及医疗建议，请提醒用户咨询专业医生。'
+                                    },
+                                    {
+                                        role: 'user',
+                                        content: question
+                                    }
+                                ],
+                                max_tokens: 1024,
+                                temperature: 0.7
+                            })
+                        });
+
+                        // 移除"思考中"状态
+                        removeTypingIndicator();
+
+                    } catch (fetchError) {
+                        console.error('Fetch请求失败:', fetchError);
+                        // 尝试使用备用API调用方式
+                        console.log('尝试使用备用方法获取回答');
+                        removeTypingIndicator();
+                        return getFallbackAnswer(question);
+                    }
+
+                    if (!response.ok) {
+                        console.error('API返回非成功状态码:', response.status);
+                        // 打印响应头信息用于调试
+                        console.log('响应头:', Array.from(response.headers.entries()));
+                        // 当API失败时，使用知识库回答作为备用
+                        return getFallbackAnswer(question);
+                    }
+
+                    const data = await response.json();
+                    console.log('API响应数据:', data);
+                    
+                    // 从响应中提取回答内容
+                    const answer = data.choices && data.choices[0] && data.choices[0].message ? 
+                                 data.choices[0].message.content : 
+                                 "无法获取回答内容，请稍后再试。";
+                     
+                    return {
+                        answer: answer,
+                        source: "Qwen/Qwen3-8B模型"
+                    };
+                } catch (error) {
+                    console.error('调用Qwen模型失败:', error);
+                    // 移除"思考中"状态
+                    removeTypingIndicator();
+                    
+                    // 返回错误处理回答
+                    return {
+                        answer: "抱歉，目前无法连接到AI模型。这可能是网络问题或服务暂时不可用，请稍后再试。\n\n如果您有紧急的医疗问题，建议直接咨询专业医生。",
+                        source: "系统提示"
+                    };
+                }
+            }
+
+            // 添加"思考中"指示器
+            function addTypingIndicator() {
+                const typingElement = document.createElement('div');
+                typingElement.id = 'typing-indicator';
+                typingElement.className = 'flex gap-4 justify-end mb-4';
+                typingElement.innerHTML = `
+                    <div class="bg-primary/10 rounded-lg rounded-tr-none p-4 max-w-[80%] text-left">
+                        <div class="flex gap-1">
+                            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                            <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fa fa-robot"></i>
+                    </div>
+                `;
+                chatContainer.appendChild(typingElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // 移除"思考中"指示器
+            function removeTypingIndicator() {
+                const typingElement = document.getElementById('typing-indicator');
+                if (typingElement) {
+                    chatContainer.removeChild(typingElement);
+                }
+            }
+
+            // 处理发送消息
+            async function sendMessage() {
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                // 添加用户消息到聊天界面
+                addUserMessage(message);
+                
+                // 清空输入框
+                messageInput.value = '';
+                
+                // 调用Qwen模型获取答案
+                const response = await callQwenModel(message);
+                addAIResponse(response.answer, response.source);
+            }
+
+            // 添加用户消息到聊天界面
+            function addUserMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'flex gap-4';
+                messageElement.innerHTML = `
+                    <div class="w-8 h-8 bg-gray-200 rounded-full flex-shrink-0"></div>
+                    <div class="bg-light rounded-lg rounded-tl-none p-4 max-w-[80%]">
+                        <p>${message}</p>
+                    </div>
+                `;
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // 添加AI回答到聊天界面
+            function addAIResponse(answer, source) {
+                // 将换行符转换为HTML换行
+                const formattedAnswer = answer.replace(/\n/g, '<br>');
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = 'flex gap-4 justify-end';
+                messageElement.innerHTML = `
+                    <div class="bg-primary/10 rounded-lg rounded-tr-none p-4 max-w-[80%] text-left">
+                        <p class="mb-2">${formattedAnswer}</p>
+                        <div class="flex items-center text-xs text-gray-500 gap-2">
+                            <i class="fa fa-book"></i>
+                            <span>参考来源：${source}</span>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fa fa-robot"></i>
+                    </div>
+                `;
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            // 为发送按钮添加点击事件
+            if (sendButton) {
+                sendButton.addEventListener('click', sendMessage);
+            }
+
+            // 为输入框添加回车键发送功能
+            if (messageInput) {
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

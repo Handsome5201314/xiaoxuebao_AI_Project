@@ -7,7 +7,7 @@ import structlog
 import logging
 import sys
 from typing import Any, Dict
-from app.core.config import settings
+from app.core.config_simple import settings
 
 def configure_logging() -> None:
     """配置结构化日志"""

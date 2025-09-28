@@ -1,13 +1,17 @@
-from typing import List, Optional, Dict, Any
-from datetime import datetime
+from typing import List, Optional, Dict, Any, Union
+from datetime import datetime, timedelta
 import json
 import re
+import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func, desc, and_, or_
-from fastapi import HTTPException, status, UploadFile
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from fastapi import HTTPException, status, UploadFile, Depends
 
 from app.core.database import get_db
+from app.core.exceptions import XiaoxuebaoException
+from app.core.logging import get_logger
 from app.models.knowledge import (
     KnowledgeCategory, MedicalTerm, MedicalGuideline,
     ArticleCategory, KnowledgeGraphNode, KnowledgeGraphEdge
@@ -19,42 +23,78 @@ from app.schemas.knowledge import (
     KnowledgeSearchParams, RelatedContentRequest, BulkImportRequest
 )
 from app.services.auth import get_current_user_service
+from app.core.query_optimizer import optimized_query, get_query_optimizer, execute_optimized_query
+from app.core.cache import cached
 
 class KnowledgeService:
+    """知识库服务类，提供知识库相关的业务逻辑处理"""
+
     def __init__(self, db: AsyncSession):
         self.db = db
-    
+        self.logger = get_logger(self.__class__.__name__)
+
     # 知识库分类管理
     async def create_category(self, category_data: KnowledgeCategoryCreate) -> KnowledgeCategory:
-        """创建知识库分类"""
-        # 检查名称是否已存在
-        result = await self.db.execute(
-            select(KnowledgeCategory).where(KnowledgeCategory.name == category_data.name)
-        )
-        if result.scalar_one_or_none():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"分类名称 '{category_data.name}' 已存在"
+        """
+        创建知识库分类
+
+        Args:
+            category_data: 分类创建数据
+
+        Returns:
+            KnowledgeCategory: 创建的分类对象
+
+        Raises:
+            XiaoxuebaoException: 当分类名称已存在时
+            SQLAlchemyError: 数据库操作错误
+        """
+        try:
+            # 检查名称是否已存在
+            result = await self.db.execute(
+                select(KnowledgeCategory).where(KnowledgeCategory.name == category_data.name)
             )
-        
-        # 生成slug
-        slug = self._generate_slug(category_data.name)
-        
-        category = KnowledgeCategory(
-            name=category_data.name,
-            slug=slug,
-            description=category_data.description,
-            icon=category_data.icon,
-            color=category_data.color,
-            sort_order=category_data.sort_order,
-            parent_id=category_data.parent_id
-        )
-        
-        self.db.add(category)
-        await self.db.commit()
-        await self.db.refresh(category)
-        
-        return category
+            if result.scalar_one_or_none():
+                raise XiaoxuebaoException(
+                    message=f"分类名称 '{category_data.name}' 已存在",
+                    error_code="CATEGORY_NAME_EXISTS"
+                )
+
+            # 生成slug
+            slug = self._generate_slug(category_data.name)
+
+            category = KnowledgeCategory(
+                name=category_data.name,
+                slug=slug,
+                description=category_data.description,
+                icon=category_data.icon,
+                color=category_data.color,
+                sort_order=category_data.sort_order,
+                parent_id=category_data.parent_id
+            )
+
+            self.db.add(category)
+            await self.db.commit()
+            await self.db.refresh(category)
+
+            self.logger.info(f"成功创建分类: {category.name}", category_id=category.id)
+            return category
+
+        except XiaoxuebaoException:
+            raise
+        except SQLAlchemyError as e:
+            await self.db.rollback()
+            self.logger.error(f"创建分类时数据库错误: {str(e)}", category_name=category_data.name)
+            raise XiaoxuebaoException(
+                message="创建分类失败，请稍后重试",
+                error_code="DATABASE_ERROR"
+            )
+        except Exception as e:
+            await self.db.rollback()
+            self.logger.error(f"创建分类时未知错误: {str(e)}", category_name=category_data.name)
+            raise XiaoxuebaoException(
+                message="创建分类失败",
+                error_code="UNKNOWN_ERROR"
+            )
     
     async def get_category(self, category_id: int) -> Optional[KnowledgeCategory]:
         """根据ID获取分类"""
@@ -126,15 +166,31 @@ class KnowledgeService:
         await self.db.commit()
         return True
     
+    @cached(expire=1800, key_prefix="categories")
     async def list_categories(self, include_inactive: bool = False) -> List[KnowledgeCategory]:
-        """获取分类列表"""
-        query = select(KnowledgeCategory)
-        if not include_inactive:
-            query = query.where(KnowledgeCategory.is_active == True)
-        
-        query = query.order_by(KnowledgeCategory.sort_order, KnowledgeCategory.name)
-        result = await self.db.execute(query)
-        return result.scalars().all()
+        """获取分类列表（带缓存）"""
+        try:
+            query = select(KnowledgeCategory)
+            if not include_inactive:
+                query = query.where(KnowledgeCategory.is_active == True)
+
+            query = query.order_by(KnowledgeCategory.sort_order, KnowledgeCategory.name)
+
+            # 使用查询优化器
+            optimizer = get_query_optimizer()
+            async with optimizer.performance_monitor.monitor_query(str(query)):
+                result = await self.db.execute(query)
+                categories = result.scalars().all()
+
+            self.logger.info(f"获取分类列表成功，数量: {len(categories)}")
+            return categories
+
+        except Exception as e:
+            self.logger.error(f"获取分类列表失败: {str(e)}")
+            raise XiaoxuebaoException(
+                message="获取分类列表失败",
+                error_code="CATEGORY_LIST_ERROR"
+            )
     
     async def get_category_tree(self) -> List[Dict[str, Any]]:
         """获取分类树形结构"""
@@ -196,22 +252,38 @@ class KnowledgeService:
         )
         return result.scalar_one_or_none()
     
+    @cached(expire=600, key_prefix="medical_terms_search")
     async def search_medical_terms(self, query: str, category_id: Optional[int] = None) -> List[MedicalTerm]:
-        """搜索医学术语"""
-        search_query = select(MedicalTerm).where(
-            or_(
-                MedicalTerm.term.ilike(f"%{query}%"),
-                MedicalTerm.definition.ilike(f"%{query}%"),
-                MedicalTerm.explanation.ilike(f"%{query}%")
+        """搜索医学术语（带缓存）"""
+        try:
+            search_query = select(MedicalTerm).where(
+                or_(
+                    MedicalTerm.term.ilike(f"%{query}%"),
+                    MedicalTerm.definition.ilike(f"%{query}%"),
+                    MedicalTerm.explanation.ilike(f"%{query}%")
+                )
             )
-        )
-        
-        if category_id:
-            search_query = search_query.where(MedicalTerm.category_id == category_id)
-        
-        search_query = search_query.order_by(desc(MedicalTerm.created_at))
-        result = await self.db.execute(search_query)
-        return result.scalars().all()
+
+            if category_id:
+                search_query = search_query.where(MedicalTerm.category_id == category_id)
+
+            search_query = search_query.order_by(desc(MedicalTerm.created_at)).limit(50)  # 限制结果数量
+
+            # 使用查询优化器
+            optimizer = get_query_optimizer()
+            async with optimizer.performance_monitor.monitor_query(str(search_query)):
+                result = await self.db.execute(search_query)
+                terms = result.scalars().all()
+
+            self.logger.info(f"搜索医学术语成功，查询: {query}, 结果数: {len(terms)}")
+            return terms
+
+        except Exception as e:
+            self.logger.error(f"搜索医学术语失败: {str(e)}", query=query, category_id=category_id)
+            raise XiaoxuebaoException(
+                message="搜索医学术语失败",
+                error_code="TERM_SEARCH_ERROR"
+            )
     
     # 医疗指南管理
     async def create_medical_guideline(self, guideline_data: MedicalGuidelineCreate) -> MedicalGuideline:

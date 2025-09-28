@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 小雪宝 - 一键安装脚本
-# 使用方法: curl -fsSL https://raw.githubusercontent.com/Handsome5201314/xiaoxuebao_AI_Project/main/xiaoxuebao-docker/scripts/install.sh | bash
+# 小雪宝 - 本地一键安装脚本
+# 使用本地文件进行部署，避免GitHub连接问题
 
 set -e
 
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 print_logo() {
     echo -e "${BLUE}"
     echo "┌─────────────────────────────────────────────┐"
-    echo "│  小雪宝 (LeukemiaPal) - Docker 一键部署     │"
+    echo "│  小雪宝 (LeukemiaPal) - 本地Docker部署       │"
     echo "│  🐳 白血病AI关爱助手 - 微服务架构           │"
     echo "│  ❄️  让科技温暖生命，用AI点亮希望          │"
     echo "└─────────────────────────────────────────────┘"
@@ -139,32 +139,6 @@ install_docker_compose() {
     log_success "Docker Compose 安装完成"
 }
 
-# 下载项目
-download_project() {
-    log_step "下载小雪宝项目..."
-    
-    # 检查git是否安装
-    if ! command -v git &> /dev/null; then
-        log_info "安装 Git..."
-        sudo apt-get update -y
-        sudo apt-get install -y git
-    fi
-    
-    # 检查项目目录是否已存在
-    if [ -d "xiaoxuebao_AI_Project" ]; then
-        log_info "项目目录已存在，更新代码..."
-        cd xiaoxuebao_AI_Project
-        git pull
-        cd ..
-    else
-        log_info "克隆项目代码..."
-        git clone https://github.com/Handsome5201314/xiaoxuebao_AI_Project.git
-    fi
-    
-    cd xiaoxuebao_AI_Project/xiaoxuebao-docker
-    log_success "项目下载完成"
-}
-
 # 检查系统资源
 check_resources() {
     log_step "检查系统资源..."
@@ -192,15 +166,36 @@ check_resources() {
     fi
 }
 
+# 使用本地项目进行部署
+use_local_project() {
+    log_step "使用本地项目进行部署..."
+    
+    # 检查是否在正确目录
+    if [ ! -d "xiaoxuebao-docker" ]; then
+        log_error "未找到 xiaoxuebao-docker 目录，请确保在项目根目录执行"
+        exit 1
+    fi
+    
+    cd xiaoxuebao-docker
+    
+    # 检查部署脚本是否存在
+    if [ ! -f "scripts/deploy.sh" ]; then
+        log_error "未找到部署脚本 scripts/deploy.sh"
+        exit 1
+    fi
+    
+    # 赋予执行权限
+    chmod +x scripts/deploy.sh
+    
+    log_success "本地项目准备完成"
+}
+
 # 部署应用
 deploy_application() {
     log_step "开始部署小雪宝应用..."
     
-    # 确保部署脚本可执行
-    chmod +x scripts/deploy.sh
-    
-    # 执行部署脚本
-    log_info "执行自动化部署脚本..."
+    # 执行本地部署脚本
+    log_info "执行本地部署脚本..."
     ./scripts/deploy.sh
     
     log_success "应用部署完成!"
@@ -210,7 +205,7 @@ deploy_application() {
 show_completion() {
     echo ""
     echo -e "${GREEN}========================================${NC}"
-    echo -e "${GREEN}🎉 小雪宝部署成功！${NC}"
+    echo -e "${GREEN}🎉 小雪宝本地部署成功！${NC}"
     echo -e "${GREEN}========================================${NC}"
     echo ""
     echo -e "${BLUE}🌐 访问地址:${NC}"
@@ -236,7 +231,7 @@ show_completion() {
 main() {
     print_logo
     
-    log_info "开始小雪宝一键安装流程..."
+    log_info "开始小雪宝本地一键安装流程..."
     
     # 检查是否为root用户
     if [ "$EUID" -eq 0 ]; then
@@ -251,7 +246,7 @@ main() {
     detect_os
     check_resources
     check_docker
-    download_project
+    use_local_project
     deploy_application
     show_completion
 }
@@ -261,4 +256,3 @@ trap 'log_error "安装过程中发生错误，请检查日志"; exit 1' ERR
 
 # 开始执行
 main "$@"
-

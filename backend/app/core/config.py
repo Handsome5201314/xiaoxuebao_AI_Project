@@ -131,6 +131,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
         validate_assignment = True
+        extra = "ignore"  # 忽略额外的环境变量
 
     def is_production(self) -> bool:
         """判断是否为生产环境"""

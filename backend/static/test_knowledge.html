@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库功能测试 - 小雪宝AI助手</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">知识库功能测试</h1>
+        
+        <!-- 知识库搜索测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">📚 增强版知识库搜索测试</h2>
+            <div class="space-y-4">
+                <!-- 基础搜索 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">搜索关键词：</label>
+                    <div class="flex space-x-2">
+                        <input type="text" id="searchInput" class="flex-1 p-3 border border-gray-300 rounded-md"
+                               placeholder="例如：白血病、化疗、营养" onkeydown="handleSearchKeyDown(event)">
+                        <button onclick="testKnowledgeSearch()" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600">
+                            常规搜索
+                        </button>
+                        <button onclick="testSmartSearch()" class="bg-purple-500 text-white px-6 py-3 rounded hover:bg-purple-600">
+                            智能搜索
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 高级搜索选项 -->
+                <div class="grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">分类筛选：</label>
+                        <select id="categoryFilter" class="w-full p-2 border border-gray-300 rounded-md">
+                            <option value="">全部分类</option>
+                            <option value="疾病知识">疾病知识</option>
+                            <option value="治疗护理">治疗护理</option>
+                            <option value="心理健康">心理健康</option>
+                            <option value="营养指导">营养指导</option>
+                            <option value="家长支持">家长支持</option>
+                            <option value="生活指导">生活指导</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">最低相关度：</label>
+                        <select id="minScoreFilter" class="w-full p-2 border border-gray-300 rounded-md">
+                            <option value="0">不限制</option>
+                            <option value="1">1分以上</option>
+                            <option value="2">2分以上</option>
+                            <option value="3">3分以上</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 快捷搜索按钮 -->
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">快捷搜索：</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="quickSearch('白血病')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">白血病</button>
+                        <button onclick="quickSearch('化疗')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">化疗</button>
+                        <button onclick="quickSearch('营养')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">营养</button>
+                        <button onclick="quickSearch('心理')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">心理</button>
+                        <button onclick="quickSearch('症状')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">症状</button>
+                        <button onclick="quickSearch('家长')" class="text-sm bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded-full">家长</button>
+                    </div>
+                </div>
+
+                <!-- 分类浏览 -->
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">分类浏览：</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        <button onclick="testCategorySearch('疾病知识')" class="text-sm bg-red-100 hover:bg-red-200 p-2 rounded text-left">🏥 疾病知识</button>
+                        <button onclick="testCategorySearch('治疗护理')" class="text-sm bg-green-100 hover:bg-green-200 p-2 rounded text-left">💊 治疗护理</button>
+                        <button onclick="testCategorySearch('心理健康')" class="text-sm bg-blue-100 hover:bg-blue-200 p-2 rounded text-left">🧘 心理健康</button>
+                        <button onclick="testCategorySearch('营养指导')" class="text-sm bg-yellow-100 hover:bg-yellow-200 p-2 rounded text-left">🍎 营养指导</button>
+                        <button onclick="testCategorySearch('家长支持')" class="text-sm bg-purple-100 hover:bg-purple-200 p-2 rounded text-left">👨‍👩‍👧‍👦 家长支持</button>
+                        <button onclick="testCategorySearch('生活指导')" class="text-sm bg-pink-100 hover:bg-pink-200 p-2 rounded text-left">🏠 生活指导</button>
+                    </div>
+                </div>
+
+                <div id="searchResult" class="mt-4 hidden">
+                    <h3 class="font-semibold mb-2">搜索结果：</h3>
+                    <div id="searchResponse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI问答测试（集成知识库） -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">🤖 AI问答测试（知识库增强）</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">输入问题：</label>
+                    <textarea id="questionInput" class="w-full p-3 border border-gray-300 rounded-md" rows="3" 
+                              placeholder="例如：我的孩子确诊白血病后很焦虑，怎么办？"></textarea>
+                </div>
+                
+                <!-- 推荐问题 -->
+                <div>
+                    <p class="text-sm text-gray-600 mb-2">推荐问题：</p>
+                    <div class="grid md:grid-cols-2 gap-2">
+                        <button onclick="askQuestion('什么是白血病？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">什么是白血病？</button>
+                        <button onclick="askQuestion('白血病有哪些症状？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">白血病有哪些症状？</button>
+                        <button onclick="askQuestion('化疗期间需要注意什么？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">化疗期间需要注意什么？</button>
+                        <button onclick="askQuestion('如何进行心理支持？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">如何进行心理支持？</button>
+                        <button onclick="askQuestion('患儿营养如何管理？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">患儿营养如何管理？</button>
+                        <button onclick="askQuestion('家长如何管理情绪？')" class="text-left text-sm bg-green-100 hover:bg-green-200 p-2 rounded">家长如何管理情绪？</button>
+                    </div>
+                </div>
+                
+                <button onclick="testAIChat()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    获取AI回答
+                </button>
+                <div id="chatResult" class="mt-4 hidden">
+                    <h3 class="font-semibold mb-2">AI回答：</h3>
+                    <div id="chatResponse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 知识库统计信息 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">📊 知识库统计信息</h2>
+            <button onclick="getKnowledgeStats()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 mb-4">
+                获取统计信息
+            </button>
+            <div id="statsResult" class="hidden">
+                <div id="statsResponse"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 处理搜索键盘事件
+        function handleSearchKeyDown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                testKnowledgeSearch();
+            }
+        }
+
+        // 快捷搜索
+        function quickSearch(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            testKnowledgeSearch();
+        }
+
+        // 测试知识库搜索
+        async function testKnowledgeSearch() {
+            const input = document.getElementById('searchInput').value;
+            const resultDiv = document.getElementById('searchResult');
+            const responseDiv = document.getElementById('searchResponse');
+            
+            if (!input.trim()) {
+                alert('请输入搜索关键词');
+                return;
+            }
+            
+            try {
+                responseDiv.innerHTML = '搜索中...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch(`/api/v1/knowledge/search?q=${encodeURIComponent(input)}&limit=5`);
+                const result = await response.json();
+                
+                if (result.success && result.data.results.length > 0) {
+                    let html = `
+                        <div class="mb-4 p-3 bg-blue-50 rounded">
+                            <p><strong>搜索查询：</strong> ${result.data.query}</p>
+                            <p><strong>找到结果：</strong> ${result.data.total} 条</p>
+                            <p><strong>搜索时间：</strong> ${result.data.search_time || 0} 秒</p>
+                        </div>
+                    `;
+                    
+                    result.data.results.forEach((item, index) => {
+                        html += `
+                            <div class="mb-4 p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-lg font-semibold text-gray-800">${item.title}</h4>
+                                    <span class="text-sm bg-blue-500 text-white px-2 py-1 rounded">${item.category}</span>
+                                </div>
+                                <p class="text-gray-600 mb-2">${item.full_content || item.content}</p>
+                                <div class="flex items-center justify-between text-sm text-gray-500">
+                                    <span>相关度: ${item.relevance_score}</span>
+                                    <span>来源: ${item.source}</span>
+                                </div>
+                                ${item.keywords ? `<div class="mt-2"><strong>关键词:</strong> ${item.keywords.join(', ')}</div>` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    responseDiv.innerHTML = html;
+                } else {
+                    responseDiv.innerHTML = '<p class="text-gray-500">未找到相关信息</p>';
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+
+        // 设置问题
+        function askQuestion(question) {
+            document.getElementById('questionInput').value = question;
+        }
+
+        // 测试AI聊天
+        async function testAIChat() {
+            const input = document.getElementById('questionInput').value;
+            const resultDiv = document.getElementById('chatResult');
+            const responseDiv = document.getElementById('chatResponse');
+            
+            if (!input.trim()) {
+                alert('请输入问题');
+                return;
+            }
+            
+            try {
+                responseDiv.innerHTML = 'AI正在思考中...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: input,
+                        context: '知识库功能测试'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                responseDiv.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p><strong>问题：</strong> ${input}</p>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <p><strong>AI回答：</strong></p>
+                            <p class="mt-2">${data.answer.replace(/\n/g, '<br>')}</p>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-600">
+                            <span><strong>来源：</strong> ${data.source}</span>
+                            <span><strong>置信度：</strong> ${(data.confidence * 100).toFixed(1)}%</span>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+
+        // 获取知识库统计信息
+        async function getKnowledgeStats() {
+            const resultDiv = document.getElementById('statsResult');
+            const responseDiv = document.getElementById('statsResponse');
+            
+            try {
+                responseDiv.innerHTML = '获取中...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch('/api/v1/knowledge/stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    let html = `
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-purple-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">基本信息</h4>
+                                <p><strong>总条目数：</strong> ${data.total_items}</p>
+                                <p><strong>状态：</strong> ${data.status}</p>
+                                <p><strong>最后更新：</strong> ${new Date(data.last_updated).toLocaleString()}</p>
+                            </div>
+                            <div class="p-4 bg-purple-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">分类统计</h4>
+                    `;
+                    
+                    for (const [category, count] of Object.entries(data.categories)) {
+                        html += `<p><strong>${category}：</strong> ${count} 条</p>`;
+                    }
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    responseDiv.innerHTML = html;
+                } else {
+                    responseDiv.innerHTML = `<p class="text-red-500">${result.message}</p>`;
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

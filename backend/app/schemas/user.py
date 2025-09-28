@@ -34,6 +34,9 @@ class User(UserBase):
     class Config:
         from_attributes = True
 
+# 用户响应别名（API兼容性）
+UserResponse = User
+
 # 用户详情（包含个人信息）
 class UserDetail(User):
     profile: Optional['UserProfile'] = None

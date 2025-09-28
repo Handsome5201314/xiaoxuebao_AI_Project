@@ -50,6 +50,23 @@ class Article(ArticleBase):
     class Config:
         from_attributes = True
 
+# 文章响应别名（API兼容性）
+ArticleResponse = Article
+
+# 文章版本响应
+class ArticleVersionResponse(BaseModel):
+    id: int
+    article_id: int
+    version: int
+    content: str
+    change_summary: Optional[str] = None
+    edit_type: str
+    created_at: datetime
+    editor: Optional['User'] = None
+
+    class Config:
+        from_attributes = True
+
 # 文章列表项（简化版）
 class ArticleListItem(BaseModel):
     id: int
@@ -77,6 +94,9 @@ class ArticleList(BaseModel):
     page: int
     page_size: int
     total_pages: int
+
+# 文章列表响应别名（API兼容性）
+ArticleListResponse = ArticleList
 
 # 文章编辑历史
 class ArticleEditBase(BaseModel):

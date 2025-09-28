@@ -41,7 +41,7 @@ def check_dependencies():
 def setup_environment():
     """设置环境变量"""
     env_vars = {
-        'DATABASE_URL': 'sqlite:///./xiaoxuebao.db',
+        'DATABASE_URL': 'sqlite+aiosqlite:///./xiaoxuebao.db',
         'SECRET_KEY': 'dev-secret-key-change-in-production',
         'JWT_SECRET': 'dev-jwt-secret-change-in-production',
         'DEBUG': 'true',

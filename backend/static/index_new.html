@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="小雪宝AI助手 - 专业的白血病AI关爱平台，为白血病患儿及家属提供24小时AI智能问答、情绪识别分析和心理支持服务">
+    <meta name="keywords" content="白血病,AI助手,心理健康,儿童白血病,医疗支持,心理辅导">
+    <meta name="author" content="小雪宝AI助手团队">
+    <!-- Open Graph -->
+    <meta property="og:title" content="小雪宝AI助手 - 白血病AI关爱平台">
+    <meta property="og:description" content="专业的白血病AI关爱平台，为白血病患儿及家属提供24小时AI智能问答服务">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/static/images/og-image.jpg">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="小雪宝AI助手">
+    <meta name="twitter:description" content="白血病AI关爱平台">
+    <title>小雪宝AI助手 - 白血病AI关爱平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f4ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81'
+                        },
+                        secondary: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7c3aed',
+                            800: '#6b21a8',
+                            900: '#581c87'
+                        },
+                        accent: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843'
+                        },
+                        success: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d'
+                        },
+                        warning: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f'
+                        },
+                        error: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d'
+                        },
+                        info: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a'
+                        },
+                        light: '#f8fafc',
+                        dark: '#1e293b'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'bounce-gentle': 'bounceGentle 2s infinite',
+                        'pulse-soft': 'pulseSoft 2s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    }
+                },
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* 动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounceGentle {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+            to { box-shadow: 0 0 30px rgba(168, 85, 247, 0.5); }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 渐变背景 */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+        
+        .bg-gradient-light {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .bg-gradient-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ec4899 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease infinite;
+        }
+        
+        .bg-gradient-feature {
+            background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+        }
+        
+        /* 聊天界面样式 */
+        .chat-container {
+            height: 500px;
+            background: linear-gradient(to bottom, #f8fafc, #ffffff);
+        }
+        
+        .message-user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .message-ai {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: #334155;
+        }
+        
+        /* 输入框样式 */
+        .input-focus:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* 卡片悬停效果 */
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* 打字机效果 */
+        .typing-indicator {
+            display: inline-block;
+        }
+        
+        .typing-indicator::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* 滚动条样式 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* 响应式设计优化 */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .feature-card {
+                margin-bottom: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .chat-container {
+                max-height: 50vh;
+                padding: 1rem;
+            }
+            
+            .quick-questions {
+                gap: 0.5rem;
+            }
+            
+            .quick-question-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .feature-card {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-questions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .quick-question-btn {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+        
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .card-hover {
+                transform: none;
+            }
+            
+            .btn-hover {
+                transform: none;
+            }
+            
+            .quick-question-btn:active {
+                transform: scale(0.98);
+            }
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            .text-gray-600 {
+                color: #000;
+            }
+            
+            .text-gray-400 {
+                color: #666;
+            }
+            
+            .border-gray-200 {
+                border-color: #000;
+            }
+        }
+        
+        /* 减少动画模式 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* 可访问性优化 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* 焦点可见性 */
+        .focus-visible:focus {
+            outline: 2px solid #6366f1;
+            outline-offset: 2px;
+        }
+        
+        /* 高对比度模式 */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-primary: #000000;
+                --text-secondary: #333333;
+                --border-color: #000000;
+            }
+        }
+        
+        /* 性能优化 */
+        .will-change-transform {
+            will-change: transform;
+        }
+        
+        .will-change-opacity {
+            will-change: opacity;
+        }
+        
+        /* 打印样式 */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .bg-gradient-primary,
+            .bg-gradient-hero {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light critical-css">
+    <!-- 加载指示器 -->
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="flex flex-col items-center space-y-4">
+            <div class="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center animate-spin">
+                <i class="fas fa-heartbeat text-white text-2xl"></i>
+            </div>
+            <p class="text-gray-600 font-medium">小雪宝AI助手加载中...</p>
+        </div>
+    </div>
+    <!-- 导航栏 -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100" aria-label="主导航">
+        <span class="sr-only">小雪宝AI助手网站导航</span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-lg animate-float">
+                        <i class="fas fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">小雪宝AI助手</h1>
+                        <p class="text-xs text-primary-600 font-medium">白血病AI关爱平台</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#chat" class="text-gray-600 hover:text-primary-600 transition-all duration-300 font-medium relative group focus-visible" aria-label="跳转到AI问答区域">
+                        AI问答
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full" aria-hidden="true"></span>
+                    </a>
+                    <a href="#features" class="text-gray-600 hover:text-primary-600 transition-all duration-300 font-medium relative group focus-visible" aria-label="跳转到功能特色区域">
+                        功能特色
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full" aria-hidden="true"></span>
+                    </a>
+                    <a href="#about" class="text-gray-600 hover:text-primary-600 transition-all duration-300 font-medium relative group focus-visible" aria-label="跳转到关于我们区域">
+                        关于我们
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full" aria-hidden="true"></span>
+                    </a>
+                    <button class="bg-gradient-primary text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-300 font-medium shadow-md hover:scale-105 focus-visible" aria-label="联系专家团队">
+                        <i class="fas fa-comments mr-2" aria-hidden="true"></i>
+                        联系专家
+                    </button>
+                </div>
+                <button class="md:hidden text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- 移动端菜单 -->
+                <div id="mobile-menu" class="md:hidden fixed top-16 left-0 right-0 bg-white shadow-lg border-t border-gray-100 z-40 hidden">
+                    <div class="px-4 py-2 space-y-1">
+                        <a href="#chat" class="block py-3 px-4 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                            <i class="fas fa-robot mr-3"></i>AI问答
+                        </a>
+                        <a href="#features" class="block py-3 px-4 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                            <i class="fas fa-star mr-3"></i>功能特色
+                        </a>
+                        <a href="#about" class="block py-3 px-4 text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                            <i class="fas fa-info-circle mr-3"></i>关于我们
+                        </a>
+                        <button class="w-full text-left py-3 px-4 bg-gradient-primary text-white rounded-lg hover:shadow-lg transition-all">
+                            <i class="fas fa-comments mr-3"></i>联系专家
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="min-h-screen">
+        <!-- Hero区域 -->
+        <section class="bg-gradient-hero text-white py-20 relative overflow-hidden">
+            <!-- 装饰元素 -->
+            <div class="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-float"></div>
+            <div class="absolute bottom-20 right-20 w-16 h-16 bg-white/10 rounded-full animate-float" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/3 right-1/4 w-12 h-12 bg-white/10 rounded-full animate-float" style="animation-delay: 2s;"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center animate-fade-in">
+                    <div class="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20">
+                        <i class="fas fa-heart mr-2 text-accent-400"></i>
+                        <span class="text-sm font-medium">白血病AI关爱平台</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                        小雪宝<span class="text-accent-300">AI</span>助手
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 opacity-95 max-w-4xl mx-auto leading-relaxed">
+                        用<span class="text-accent-300 font-semibold">科技温暖生命</span>，为白血病患儿及家属提供专业的<span class="text-accent-300 font-semibold">AI心理支持</span>与<span class="text-accent-300 font-semibold">医疗指导</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="scrollToChat()" class="bg-white text-primary-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 group focus-visible" aria-label="开始与AI助手对话">
+                            <i class="fas fa-comments mr-2 group-hover:scale-110 transition-transform" aria-hidden="true"></i>
+                            开始AI对话
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-primary-600 transition-all duration-300 hover:scale-105 group focus-visible" aria-label="了解更多关于小雪宝AI助手的信息">
+                            <i class="fas fa-play mr-2 group-hover:scale-110 transition-transform" aria-hidden="true"></i>
+                            了解更多
+                        </button>
+                    </div>
+                    
+                    <!-- 统计数据 -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 max-w-2xl mx-auto">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2">100+</div>
+                            <div class="text-sm opacity-90">医疗专家参与</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2">500+</div>
+                            <div class="text-sm opacity-90">家庭获得帮助</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2">24/7</div>
+                            <div class="text-sm opacity-90">AI在线服务</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2">99%</div>
+                            <div class="text-sm opacity-90">用户满意度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI问答系统 - 核心功能区 -->
+        <section id="chat" class="py-20 bg-gradient-to-br from-gray-50 to-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 animate-slide-up">
+                    <div class="inline-flex items-center bg-primary-50 text-primary-600 px-4 py-2 rounded-full mb-4">
+                        <i class="fas fa-robot mr-2"></i>
+                        <span class="text-sm font-medium">AI智能问答系统</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                        智能<span class="text-primary-600">对话</span>助手
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        基于先进AI技术，为白血病患儿及家属提供<span class="text-primary-600 font-medium">24小时专业问答服务</span>，涵盖疾病知识、心理支持、治疗指导等全方位支持
+                    </p>
+                </div>
+
+                <!-- 聊天界面 -->
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden card-hover transition-all duration-500 hover:shadow-3xl border border-gray-100">
+                    <!-- 聊天头部 -->
+                    <div class="bg-gradient-primary text-white p-6 relative overflow-hidden">
+                        <!-- 装饰背景 -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+                        
+                        <div class="flex items-center justify-between relative z-10">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-robot text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg">小雪宝AI助手</h3>
+                                    <p class="text-sm opacity-90 flex items-center">
+                                        <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse-soft"></span>
+                                        在线服务中 • 白血病专业支持
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="clearChat()" class="text-white hover:bg-white hover:bg-opacity-20 p-3 rounded-xl transition-all duration-300 hover:scale-110" title="清空对话">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button class="text-white hover:bg-white hover:bg-opacity-20 p-3 rounded-xl transition-all duration-300 hover:scale-110" title="设置">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <button class="text-white hover:bg-white hover:bg-opacity-20 p-3 rounded-xl transition-all duration-300 hover:scale-110" title="知识库">
+                                    <i class="fas fa-book"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 聊天消息区域 -->
+                    <div id="chat-messages" class="chat-container overflow-y-auto custom-scrollbar p-6 space-y-6 min-h-[400px]">
+                        <!-- 欢迎消息 -->
+                        <div class="flex items-start space-x-4 animate-fade-in">
+                            <div class="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                            <div class="message-ai rounded-2xl rounded-tl-sm p-6 max-w-2xl border border-gray-100 shadow-sm">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-3 h-3 bg-primary-500 rounded-full mr-2 animate-pulse"></div>
+                                    <span class="text-sm font-medium text-primary-600">小雪宝AI助手</span>
+                                </div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    您好！我是小雪宝AI助手 🤖<br><br>
+                                    我可以为您提供专业的白血病相关支持：<br>
+                                    <span class="inline-flex items-center bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                                        <i class="fas fa-book-medical mr-1"></i>疾病知识解答
+                                    </span>
+                                    <span class="inline-flex items-center bg-accent-50 text-accent-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                                        <i class="fas fa-heart mr-1"></i>心理支持
+                                    </span>
+                                    <span class="inline-flex items-center bg-success-50 text-success-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                                        <i class="fas fa-user-md mr-1"></i>治疗指导
+                                    </span>
+                                    <span class="inline-flex items-center bg-info-50 text-info-700 px-3 py-1 rounded-full text-sm mr-2 mb-2">
+                                        <i class="fas fa-home mr-1"></i>生活护理
+                                    </span>
+                                    <br><br>
+                                    有什么问题可以随时问我哦！
+                                </p>
+                                <div class="mt-4 pt-4 border-t border-gray-100">
+                                    <p class="text-xs text-gray-500">
+                                        <i class="fas fa-shield-alt mr-1"></i>
+                                        您的对话内容将严格保密，我们采用企业级加密技术保护您的隐私安全
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 输入区域 -->
+                    <div class="border-t bg-gradient-to-r from-gray-50 to-gray-100 p-6">
+                        <div class="flex items-end space-x-4">
+                            <div class="flex-1 relative">
+                                <textarea 
+                                    id="message-input" 
+                                    placeholder="请输入您关于白血病的问题，例如：化疗期间需要注意什么？..." 
+                                    class="w-full p-4 border border-gray-200 rounded-2xl resize-none input-focus transition-all duration-300 shadow-sm focus:shadow-md focus:border-primary-300"
+                                    rows="1"
+                                    onkeydown="handleKeyDown(event)"
+                                    oninput="autoResize(this)"
+                                ></textarea>
+                                <div class="absolute right-3 top-3 text-gray-400">
+                                    <i class="fas fa-keyboard"></i>
+                                </div>
+                            </div>
+                            <button 
+                                id="send-button"
+                                onclick="sendMessage()" 
+                                class="bg-gradient-primary text-white p-4 rounded-2xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 shadow-md"
+                                title="发送消息 (Ctrl+Enter)"
+                            >
+                                <i class="fas fa-paper-plane text-lg"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- 快捷问题和知识库搜索 -->
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-sm font-medium text-gray-700">快捷问题：</p>
+                                <button onclick="toggleKnowledgeSearch()" class="text-sm text-primary-600 hover:text-primary-700 transition-colors font-medium">
+                                    <i class="fas fa-search mr-1"></i>知识库搜索
+                                </button>
+                            </div>
+
+                            <!-- 快捷问题按钮 -->
+                            <div id="quick-questions" class="flex flex-wrap gap-3">
+                                <button onclick="sendQuickQuestion('我的孩子确诊白血病后很焦虑，怎么办？')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-heartbeat mr-2 text-accent-500 group-hover:scale-110 transition-transform"></i>
+                                    孩子焦虑怎么办？
+                                </button>
+                                <button onclick="sendQuickQuestion('化疗期间需要注意什么？')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-pills mr-2 text-info-500 group-hover:scale-110 transition-transform"></i>
+                                    化疗注意事项
+                                </button>
+                                <button onclick="sendQuickQuestion('如何帮助孩子建立治疗信心？')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-hands-helping mr-2 text-success-500 group-hover:scale-110 transition-transform"></i>
+                                    建立治疗信心
+                                </button>
+                                <button onclick="sendQuickQuestion('白血病患儿的营养指导')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-utensils mr-2 text-warning-500 group-hover:scale-110 transition-transform"></i>
+                                    营养指导
+                                </button>
+                                <button onclick="sendQuickQuestion('白血病的症状表现')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-stethoscope mr-2 text-error-500 group-hover:scale-110 transition-transform"></i>
+                                    症状表现
+                                </button>
+                                <button onclick="sendQuickQuestion('家长情绪管理')" class="text-sm bg-white hover:bg-primary-50 border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group">
+                                    <i class="fas fa-user-friends mr-2 text-secondary-500 group-hover:scale-110 transition-transform"></i>
+                                    家长情绪管理
+                                </button>
+                            </div>
+
+                            <!-- 知识库搜索界面 -->
+                            <div id="knowledge-search" class="hidden mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-book text-primary"></i>
+                                        <span class="text-sm font-medium text-gray-700">专业知识库搜索</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button onclick="toggleAdvancedSearch()" class="text-xs text-primary hover:text-secondary transition-colors">
+                                            <i class="fas fa-cog mr-1"></i>高级选项
+                                        </button>
+                                        <button onclick="showSearchStats()" class="text-xs text-gray-500 hover:text-primary transition-colors">
+                                            <i class="fas fa-chart-bar mr-1"></i>统计
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 基础搜索 -->
+                                <div class="flex space-x-2 mb-3">
+                                    <input
+                                        type="text"
+                                        id="kb-search-input"
+                                        placeholder="搜索白血病相关知识..."
+                                        class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-primary"
+                                        onkeydown="handleKbSearchKeyDown(event)"
+                                    >
+                                    <button
+                                        onclick="searchKnowledge()"
+                                        class="px-4 py-2 bg-primary text-white text-sm rounded-lg hover:opacity-90 transition-opacity"
+                                        title="常规搜索"
+                                    >
+                                        <i class="fas fa-search mr-1"></i>搜索
+                                    </button>
+                                    <button
+                                        onclick="smartSearchKnowledge()"
+                                        class="px-4 py-2 bg-secondary text-white text-sm rounded-lg hover:opacity-90 transition-opacity"
+                                        title="智能搜索 - 包含建议和相关分类"
+                                    >
+                                        <i class="fas fa-magic mr-1"></i>智能
+                                    </button>
+                                </div>
+
+                                <!-- 高级搜索选项 -->
+                                <div id="advanced-search" class="hidden mb-3 p-3 bg-white rounded-lg border border-gray-200">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                        <div>
+                                            <label class="block text-gray-700 font-medium mb-1">
+                                                <i class="fas fa-filter mr-1"></i>分类筛选:
+                                            </label>
+                                            <select id="category-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="">🔍 全部分类</option>
+                                                <option value="疾病知识">🏥 疾病知识</option>
+                                                <option value="治疗护理">💊 治疗护理</option>
+                                                <option value="心理健康">🧘 心理健康</option>
+                                                <option value="营养指导">🍎 营养指导</option>
+                                                <option value="家长支持">👨‍👩‍👧‍👦 家长支持</option>
+                                                <option value="生活指导">🏠 生活指导</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-gray-700 font-medium mb-1">
+                                                <i class="fas fa-star mr-1"></i>最低相关度:
+                                            </label>
+                                            <select id="min-score-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary">
+                                                <option value="0">⭐ 不限制</option>
+                                                <option value="1">⭐⭐ 1分以上</option>
+                                                <option value="2">⭐⭐⭐ 2分以上</option>
+                                                <option value="3">⭐⭐⭐⭐ 3分以上</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 pt-3 border-t border-gray-200">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs text-gray-600">快速操作:</span>
+                                            <div class="flex space-x-2">
+                                                <button onclick="clearSearchFilters()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded">
+                                                    <i class="fas fa-times mr-1"></i>清除筛选
+                                                </button>
+                                                <button onclick="getSearchStats()" class="text-xs bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded">
+                                                    <i class="fas fa-info-circle mr-1"></i>搜索统计
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 快速分类按钮 -->
+                                <div class="mb-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs text-gray-600 font-medium">快速分类浏览:</span>
+                                        <button onclick="toggleQuickCategories()" class="text-xs text-primary hover:text-secondary">
+                                            <i class="fas fa-chevron-down mr-1" id="category-toggle-icon"></i>展开
+                                        </button>
+                                    </div>
+                                    <div id="quick-categories" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                        <button onclick="searchByCategory('疾病知识')" class="text-xs bg-red-100 hover:bg-red-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-hospital mr-1"></i>疾病知识
+                                        </button>
+                                        <button onclick="searchByCategory('治疗护理')" class="text-xs bg-green-100 hover:bg-green-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-pills mr-1"></i>治疗护理
+                                        </button>
+                                        <button onclick="searchByCategory('心理健康')" class="text-xs bg-blue-100 hover:bg-blue-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-heart mr-1"></i>心理健康
+                                        </button>
+                                        <button onclick="searchByCategory('营养指导')" class="text-xs bg-yellow-100 hover:bg-yellow-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-apple-alt mr-1"></i>营养指导
+                                        </button>
+                                        <button onclick="searchByCategory('家长支持')" class="text-xs bg-purple-100 hover:bg-purple-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-users mr-1"></i>家长支持
+                                        </button>
+                                        <button onclick="searchByCategory('生活指导')" class="text-xs bg-pink-100 hover:bg-pink-200 px-3 py-2 rounded-lg text-left transition-colors">
+                                            <i class="fas fa-home mr-1"></i>生活指导
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 搜索结果区域 -->
+                                <div id="kb-search-results" class="mt-3 hidden"></div>
+
+                                <!-- 搜索统计信息 -->
+                                <div id="search-stats" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border">
+                                    <div class="text-xs text-gray-600">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-medium">知识库统计</span>
+                                            <button onclick="hideSearchStats()" class="text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div id="stats-content">加载中...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特色区域 -->
+        <section id="features" class="py-20 bg-gradient-feature relative overflow-hidden">
+            <!-- 装饰背景 -->
+            <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-primary-50 to-transparent"></div>
+            <div class="absolute bottom-0 right-0 w-64 h-64 bg-accent-50 rounded-full -translate-x-32 translate-y-32 opacity-50"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center bg-white text-primary-600 px-4 py-2 rounded-full mb-4 shadow-sm border border-primary-100">
+                        <i class="fas fa-star mr-2"></i>
+                        <span class="text-sm font-medium">核心功能特色</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+                        全方位<span class="text-primary-600">智能</span>支持
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        基于先进AI技术，为白血病患儿及家属提供<span class="text-primary-600 font-medium">专业、温暖、个性化</span>的全方位智能化支持服务
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 功能卡片1 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-primary-200 group">
+                        <div class="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-brain text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-primary-600 transition-colors">AI智能问答</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">基于Qwen3-8B大模型，提供专业的白血病知识解答和医疗指导，24小时在线服务</p>
+                        <div class="flex items-center text-primary-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>探索功能</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 功能卡片2 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-accent-200 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-accent-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-heart text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-accent-600 transition-colors">情绪识别分析</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">多模态情绪识别技术，实时分析儿童心理状态并提供个性化干预建议</p>
+                        <div class="flex items-center text-accent-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>了解详情</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 功能卡片3 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-success-200 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-success-500 to-green-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-users text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-success-600 transition-colors">家长协同支持</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">为家长提供专业指导，建立家庭支持网络，共同关爱患儿成长与康复</p>
+                        <div class="flex items-center text-success-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>获取支持</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 功能卡片4 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-info-200 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-info-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-info-600 transition-colors">数据安全保护</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">企业级数据加密和隐私保护技术，确保所有健康数据的安全性和保密性</p>
+                        <div class="flex items-center text-info-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>安全保障</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 功能卡片5 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-warning-200 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-warning-500 to-yellow-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chart-line text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-warning-600 transition-colors">数据可视化</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">直观的数据图表和趋势分析，帮助家长了解康复进展和心理变化趋势</p>
+                        <div class="flex items-center text-warning-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>查看分析</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- 功能卡片6 -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg card-hover transition-all duration-500 border border-gray-100 hover:border-secondary-200 group">
+                        <div class="w-16 h-16 bg-gradient-to-br from-secondary-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-hands-helping text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 group-hover:text-secondary-600 transition-colors">社区支持网络</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">连接全国患儿家庭，建立互助社区，分享经验和提供情感支持与鼓励</p>
+                        <div class="flex items-center text-secondary-600 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                            <span>加入社区</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 功能特色底部CTA -->
+                <div class="text-center mt-16">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 max-w-2xl mx-auto">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">开始您的AI关爱之旅</h3>
+                        <p class="text-gray-600 mb-6">立即体验小雪宝AI助手，为您的孩子提供专业的白血病支持服务</p>
+                        <button onclick="scrollToChat()" class="bg-gradient-primary text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            <i class="fas fa-play mr-2"></i>
+                            立即开始
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们区域 -->
+        <section id="about" class="py-20 bg-white relative overflow-hidden">
+            <!-- 装饰背景 -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-50 to-accent-50 rounded-full -translate-y-48 translate-x-48 opacity-60"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-success-50 rounded-full -translate-x-32 translate-y-32 opacity-40"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="animate-slide-up">
+                        <div class="inline-flex items-center bg-primary-50 text-primary-600 px-4 py-2 rounded-full mb-6">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <span class="text-sm font-medium">关于我们</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+                            用<span class="text-primary-600">科技</span>传递<span class="text-accent-600">温暖</span>
+                        </h2>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                            小雪宝AI助手是一个专注于白血病患儿及家属心理健康支持的AI平台。我们运用最先进的人工智能技术，为每一个需要关爱的家庭提供<span class="text-primary-600 font-medium">专业、温暖、个性化</span>的服务，让科技真正服务于人文关怀。
+                        </p>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-4 p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary-200 transition-colors">
+                                <div class="w-8 h-8 bg-success-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">24/7 AI智能客服支持</span>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary-200 transition-colors">
+                                <div class="w-8 h-8 bg-success-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">专业医疗团队审核内容</span>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary-200 transition-colors">
+                                <div class="w-8 h-8 bg-success-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">个性化心理健康方案</span>
+                            </div>
+                            <div class="flex items-center space-x-4 p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary-200 transition-colors">
+                                <div class="w-8 h-8 bg-success-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">完全免费的公益服务</span>
+                            </div>
+                        </div>
+                        <button class="bg-gradient-primary text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            <i class="fas fa-users mr-2"></i>
+                            加入我们的团队
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-primary rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
+                            <!-- 装饰元素 -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+                            
+                            <div class="text-center relative z-10">
+                                <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                                    <i class="fas fa-heart text-white text-3xl animate-bounce-gentle"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4">我们的使命</h3>
+                                <p class="text-lg opacity-90 leading-relaxed">
+                                    用科技的力量温暖每一个需要关爱的心灵，让每个白血病患儿都能在<span class="font-semibold">充满爱与希望</span>的环境中勇敢面对挑战，重拾健康与快乐。
+                                </p>
+                                <div class="mt-6 pt-6 border-t border-white/20">
+                                    <p class="text-sm opacity-80">
+                                        <i class="fas fa-quote-left mr-2"></i>
+                                        科技向善，关爱无限
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 统计数据卡片 -->
+                        <div class="grid grid-cols-3 gap-4 mt-8">
+                            <div class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100">
+                                <div class="text-2xl font-bold text-primary-600 mb-1">100+</div>
+                                <div class="text-xs text-gray-600">医疗专家</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100">
+                                <div class="text-2xl font-bold text-accent-600 mb-1">500+</div>
+                                <div class="text-xs text-gray-600">受益家庭</div>
+                            </div>
+                            <div class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100">
+                                <div class="text-2xl font-bold text-success-600 mb-1">99%</div>
+                                <div class="text-xs text-gray-600">满意度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16 relative overflow-hidden">
+        <!-- 装饰背景 -->
+        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-primary-500/10 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center shadow-lg">
+                            <i class="fas fa-heartbeat text-white"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold">小雪宝AI助手</span>
+                            <p class="text-xs text-primary-300">白血病AI关爱平台</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        专注于白血病患儿心理健康支持的AI平台，用科技传递温暖与希望，让每个孩子都能在关爱中成长。
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-8 h-8 bg-gray-700 hover:bg-primary-600 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-weixin text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-weibo text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-github text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">核心功能</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="#chat" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-robot mr-2 text-primary-400 group-hover:scale-110 transition-transform"></i>
+                                AI智能问答
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#features" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-heart mr-2 text-accent-400 group-hover:scale-110 transition-transform"></i>
+                                情绪识别分析
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#features" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-users mr-2 text-success-400 group-hover:scale-110 transition-transform"></i>
+                                家长协同支持
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#features" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-hands-helping mr-2 text-secondary-400 group-hover:scale-110 transition-transform"></i>
+                                社区支持网络
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">帮助中心</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-book mr-2 text-info-400 group-hover:scale-110 transition-transform"></i>
+                                使用指南
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-question-circle mr-2 text-warning-400 group-hover:scale-110 transition-transform"></i>
+                                常见问题
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-shield-alt mr-2 text-success-400 group-hover:scale-110 transition-transform"></i>
+                                隐私政策
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center group">
+                                <i class="fas fa-file-contract mr-2 text-gray-400 group-hover:scale-110 transition-transform"></i>
+                                服务条款
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-lg">联系我们</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center text-gray-300">
+                            <i class="fas fa-envelope mr-3 text-primary-400"></i>
+                            support@xiaoxuebao.ai
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <i class="fas fa-phone mr-3 text-accent-400"></i>
+                            400-123-4567
+                        </li>
+                        <li class="flex items-center text-gray-300">
+                            <i class="fas fa-map-marker-alt mr-3 text-success-400"></i>
+                            北京市朝阳区
+                        </li>
+                    </ul>
+                    <div class="mt-6 p-4 bg-gray-800 rounded-xl">
+                        <p class="text-xs text-gray-400 mb-2">订阅我们的资讯</p>
+                        <div class="flex space-x-2">
+                            <input type="email" placeholder="您的邮箱" class="flex-1 px-3 py-2 bg-gray-700 text-white text-sm rounded-lg border border-gray-600 focus:outline-none focus:border-primary-400">
+                            <button class="bg-primary-600 hover:bg-primary-700 px-3 py-2 rounded-lg text-sm transition-colors">
+                                订阅
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p class="text-sm text-gray-400">
+                    &copy; 2024 小雪宝AI助手. 保留所有权利. | 
+                    <span class="text-primary-300">这是一个公益项目，致力于帮助白血病患儿及家属</span>
+                </p>
+                <p class="text-xs text-gray-500 mt-2">
+                    <i class="fas fa-heart text-accent-400 mr-1"></i>
+                    用科技传递温暖，让关爱无处不在
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="小雪宝AI助手">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+    
+    <!-- 关键CSS内联 -->
+    <style>
+        /* 关键渲染路径CSS */
+        .critical-css {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f8fafc;
+        }
+    </style>
+    
+    <!-- JavaScript -->
+    <script>
+        // 全局变量
+        let isTyping = false;
+        let messageCount = 0;
+        let isOnline = navigator.onLine;
+        
+        // 离线状态检测
+        window.addEventListener('online', () => {
+            isOnline = true;
+            showToast('网络连接已恢复', 'success');
+        });
+        
+        window.addEventListener('offline', () => {
+            isOnline = false;
+            showToast('网络连接已断开，部分功能可能受限', 'warning');
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加动画效果
+            const elements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 滚动到聊天区域
+        function scrollToChat() {
+            document.getElementById('chat').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // 聚焦到输入框
+            setTimeout(() => {
+                document.getElementById('message-input').focus();
+            }, 500);
+        }
+
+        // 处理键盘事件
+        function handleKeyDown(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // 自动调整输入框高度
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        // 发送快捷问题
+        function sendQuickQuestion(question) {
+            document.getElementById('message-input').value = question;
+            sendMessage();
+        }
+
+        // 切换知识库搜索界面
+        function toggleKnowledgeSearch() {
+            const searchDiv = document.getElementById('knowledge-search');
+            const quickQuestions = document.getElementById('quick-questions');
+
+            if (searchDiv.classList.contains('hidden')) {
+                searchDiv.classList.remove('hidden');
+                quickQuestions.classList.add('hidden');
+                document.getElementById('kb-search-input').focus();
+            } else {
+                searchDiv.classList.add('hidden');
+                quickQuestions.classList.remove('hidden');
+                document.getElementById('kb-search-results').classList.add('hidden');
+            }
+        }
+
+        // 处理知识库搜索键盘事件
+        function handleKbSearchKeyDown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                searchKnowledge();
+            }
+        }
+
+        // 切换高级搜索
+        function toggleAdvancedSearch() {
+            const advancedDiv = document.getElementById('advanced-search');
+            if (advancedDiv.classList.contains('hidden')) {
+                advancedDiv.classList.remove('hidden');
+            } else {
+                advancedDiv.classList.add('hidden');
+            }
+        }
+
+        // 切换快速分类
+        function toggleQuickCategories() {
+            const categoriesDiv = document.getElementById('quick-categories');
+            const toggleIcon = document.getElementById('category-toggle-icon');
+            const toggleButton = toggleIcon.parentElement;
+
+            if (categoriesDiv.classList.contains('hidden')) {
+                categoriesDiv.classList.remove('hidden');
+                toggleIcon.className = 'fas fa-chevron-up mr-1';
+                toggleButton.innerHTML = '<i class="fas fa-chevron-up mr-1"></i>收起';
+            } else {
+                categoriesDiv.classList.add('hidden');
+                toggleIcon.className = 'fas fa-chevron-down mr-1';
+                toggleButton.innerHTML = '<i class="fas fa-chevron-down mr-1"></i>展开';
+            }
+        }
+
+        // 清除搜索筛选
+        function clearSearchFilters() {
+            document.getElementById('category-filter').value = '';
+            document.getElementById('min-score-filter').value = '0';
+            document.getElementById('kb-search-input').value = '';
+            document.getElementById('kb-search-results').classList.add('hidden');
+        }
+
+        // 显示搜索统计
+        function showSearchStats() {
+            const statsDiv = document.getElementById('search-stats');
+            if (statsDiv.classList.contains('hidden')) {
+                getSearchStats();
+                statsDiv.classList.remove('hidden');
+            } else {
+                statsDiv.classList.add('hidden');
+            }
+        }
+
+        // 隐藏搜索统计
+        function hideSearchStats() {
+            document.getElementById('search-stats').classList.add('hidden');
+        }
+
+        // 获取搜索统计
+        async function getSearchStats() {
+            const statsContent = document.getElementById('stats-content');
+
+            try {
+                statsContent.innerHTML = '加载统计信息...';
+
+                // 获取分类统计
+                const categoriesResponse = await fetch('/api/v1/knowledge/categories');
+                const categoriesResult = await categoriesResponse.json();
+
+                // 获取关键词统计
+                const keywordsResponse = await fetch('/api/v1/knowledge/keywords?limit=10');
+                const keywordsResult = await keywordsResponse.json();
+
+                let html = '';
+
+                if (categoriesResult.success) {
+                    html += '<div class="mb-3"><strong>分类统计:</strong><div class="mt-1 space-y-1">';
+                    Object.entries(categoriesResult.data.categories).forEach(([category, count]) => {
+                        html += `<div class="flex justify-between"><span>${category}:</span><span class="font-medium">${count}条</span></div>`;
+                    });
+                    html += `</div><div class="mt-2 text-gray-500">总计: ${categoriesResult.data.total_items}条知识</div></div>`;
+                }
+
+                if (keywordsResult.success) {
+                    html += '<div><strong>热门关键词:</strong><div class="mt-1 flex flex-wrap gap-1">';
+                    keywordsResult.data.keywords.slice(0, 8).forEach(keyword => {
+                        html += `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${keyword.keyword}</span>`;
+                    });
+                    html += '</div></div>';
+                }
+
+                statsContent.innerHTML = html || '暂无统计信息';
+
+            } catch (error) {
+                statsContent.innerHTML = `<div class="text-red-500">获取统计失败: ${error.message}</div>`;
+            }
+        }
+
+        // 搜索知识库 - 常规搜索
+        async function searchKnowledge() {
+            const input = document.getElementById('kb-search-input');
+            const resultsDiv = document.getElementById('kb-search-results');
+            const categoryFilter = document.getElementById('category-filter');
+            const minScoreFilter = document.getElementById('min-score-filter');
+            const query = input.value.trim();
+
+            if (!query) {
+                alert('请输入搜索关键词');
+                return;
+            }
+
+            try {
+                resultsDiv.innerHTML = '<div class="text-sm text-blue-500 p-3 bg-blue-50 rounded-lg"><i class="fas fa-search mr-2"></i>常规搜索中...</div>';
+                resultsDiv.classList.remove('hidden');
+
+                // 构建搜索URL
+                let searchUrl = `/api/v1/knowledge/search?q=${encodeURIComponent(query)}&limit=5`;
+                if (categoryFilter.value) {
+                    searchUrl += `&category=${encodeURIComponent(categoryFilter.value)}`;
+                }
+                if (minScoreFilter.value) {
+                    searchUrl += `&min_score=${minScoreFilter.value}`;
+                }
+
+                const response = await fetch(searchUrl);
+                const result = await response.json();
+
+                displaySearchResults(result, '🔍 常规搜索结果', 'blue', 'primary');
+
+            } catch (error) {
+                console.error('知识库搜索失败:', error);
+                resultsDiv.innerHTML = '<div class="text-sm text-red-500 p-3 bg-red-50 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i>搜索失败，请稍后再试</div>';
+            }
+        }
+
+        // 显示搜索结果的通用函数
+        function displaySearchResults(result, title, bgColor, badgeColor) {
+            const resultsDiv = document.getElementById('kb-search-results');
+
+            let html = `
+                <div class="bg-${bgColor}-50 p-3 rounded-lg mb-3 border border-${bgColor}-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-${bgColor}-800">${title}</h4>
+                        <button onclick="document.getElementById('kb-search-results').classList.add('hidden')" class="text-${bgColor}-400 hover:text-${bgColor}-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm text-${bgColor}-600">
+                        查询词：${result.data.query} |
+                        结果数：${result.data.total || result.data.total_results} |
+                        搜索时间：${result.data.search_time}秒
+                        ${result.data.filters && result.data.filters.category ? ` | 分类：${result.data.filters.category}` : ''}
+                        ${result.data.filters && result.data.filters.min_score > 0 ? ` | 最低分：${result.data.filters.min_score}` : ''}
+                    </div>
+                </div>
+            `;
+
+            if (result.success && (result.data.results || result.data.items) && (result.data.results || result.data.items).length > 0) {
+                const items = result.data.results || result.data.items;
+                html += '<div class="space-y-3">';
+
+                items.forEach((item, index) => {
+                    html += `
+                        <div class="bg-white rounded-lg p-3 border border-${bgColor}-200 hover:border-${badgeColor} transition-colors cursor-pointer shadow-sm" onclick="useKnowledgeItem('${item.title}', '${escapeHtml(item.full_content || item.content)}')">
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="font-medium text-gray-800 text-sm">${item.title}</h5>
+                                <span class="text-xs bg-${badgeColor} text-white px-2 py-1 rounded-full">${item.category}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2 leading-relaxed">${item.content}</p>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-500">
+                                    <i class="fas fa-star mr-1"></i>相关度: ${item.relevance_score}
+                                </span>
+                                <span class="text-${badgeColor}">
+                                    <i class="fas fa-mouse-pointer mr-1"></i>点击查看详情
+                                </span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-2 flex items-center">
+                                <i class="fas fa-tags mr-1"></i>
+                                <span>关键词: ${item.keywords.join(', ')}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            } else {
+                html += '<div class="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg text-center"><i class="fas fa-search mr-2"></i>未找到相关信息</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // 智能搜索
+        async function smartSearchKnowledge() {
+            const input = document.getElementById('kb-search-input');
+            const resultsDiv = document.getElementById('kb-search-results');
+            const query = input.value.trim();
+
+            if (!query) {
+                alert('请输入搜索关键词');
+                return;
+            }
+
+            try {
+                resultsDiv.innerHTML = '<div class="text-sm text-purple-500 p-3 bg-purple-50 rounded-lg"><i class="fas fa-magic mr-2"></i>智能搜索中...</div>';
+                resultsDiv.classList.remove('hidden');
+
+                const response = await fetch(`/api/v1/knowledge/smart-search?q=${encodeURIComponent(query)}&limit=5`);
+                const result = await response.json();
+
+                displaySmartSearchResults(result);
+
+            } catch (error) {
+                console.error('智能搜索失败:', error);
+                resultsDiv.innerHTML = '<div class="text-sm text-red-500 p-3 bg-red-50 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i>智能搜索失败，请稍后再试</div>';
+            }
+        }
+
+        // 显示智能搜索结果
+        function displaySmartSearchResults(result) {
+            const resultsDiv = document.getElementById('kb-search-results');
+
+            let html = `
+                <div class="bg-purple-50 p-3 rounded-lg mb-3 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-purple-800">🧠 智能搜索结果</h4>
+                        <button onclick="document.getElementById('kb-search-results').classList.add('hidden')" class="text-purple-400 hover:text-purple-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm text-purple-600">
+                        查询词：${result.data.query} |
+                        结果数：${result.data.total_results} |
+                        搜索时间：${result.data.search_time}秒
+                    </div>
+                </div>
+            `;
+
+            if (result.success && result.data.results.length > 0) {
+                // 搜索结果
+                html += '<div class="space-y-3 mb-4">';
+                result.data.results.forEach((item, index) => {
+                    html += `
+                        <div class="bg-white rounded-lg p-3 border border-purple-200 hover:border-secondary transition-colors cursor-pointer shadow-sm" onclick="useKnowledgeItem('${item.title}', '${escapeHtml(item.full_content || item.content)}')">
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="font-medium text-gray-800 text-sm">${item.title}</h5>
+                                <span class="text-xs bg-secondary text-white px-2 py-1 rounded-full">${item.category}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2 leading-relaxed">${item.content}</p>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-500">
+                                    <i class="fas fa-brain mr-1"></i>智能评分: ${item.relevance_score}
+                                </span>
+                                <span class="text-secondary">
+                                    <i class="fas fa-magic mr-1"></i>智能匹配
+                                </span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-2 flex items-center">
+                                <i class="fas fa-tags mr-1"></i>
+                                <span>关键词: ${item.keywords.join(', ')}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+
+                // 搜索建议
+                if (result.data.suggestions && result.data.suggestions.length > 0) {
+                    html += `
+                        <div class="bg-yellow-50 p-3 rounded-lg mb-3 border border-yellow-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-lightbulb mr-2 text-yellow-600"></i>
+                                <h5 class="font-medium text-yellow-800">搜索建议</h5>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                    `;
+                    result.data.suggestions.forEach(suggestion => {
+                        html += `<button onclick="document.getElementById('kb-search-input').value='${suggestion}'; smartSearchKnowledge();" class="text-xs bg-yellow-100 hover:bg-yellow-200 px-3 py-1 rounded-full border border-yellow-300 transition-colors">${suggestion}</button>`;
+                    });
+                    html += '</div></div>';
+                }
+
+                // 相关分类
+                if (result.data.related_categories && result.data.related_categories.length > 0) {
+                    html += `
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-folder-open mr-2 text-green-600"></i>
+                                <h5 class="font-medium text-green-800">相关分类</h5>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                    `;
+                    result.data.related_categories.forEach(cat => {
+                        html += `<button onclick="searchByCategory('${cat.category}')" class="text-xs bg-green-100 hover:bg-green-200 px-3 py-1 rounded-full border border-green-300 transition-colors">${cat.category} (${cat.item_count}条)</button>`;
+                    });
+                    html += '</div></div>';
+                }
+
+            } else {
+                html += '<div class="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg text-center"><i class="fas fa-search mr-2"></i>未找到相关结果</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // 按分类搜索
+        async function searchByCategory(category) {
+            const resultsDiv = document.getElementById('kb-search-results');
+
+            try {
+                resultsDiv.innerHTML = `<div class="text-sm text-green-500 p-3 bg-green-50 rounded-lg"><i class="fas fa-folder-open mr-2"></i>加载分类 "${category}" 中...</div>`;
+                resultsDiv.classList.remove('hidden');
+
+                const response = await fetch(`/api/v1/knowledge/category/${encodeURIComponent(category)}`);
+                const result = await response.json();
+
+                displayCategoryResults(result, category);
+
+            } catch (error) {
+                console.error('分类搜索失败:', error);
+                resultsDiv.innerHTML = '<div class="text-sm text-red-500 p-3 bg-red-50 rounded-lg"><i class="fas fa-exclamation-triangle mr-2"></i>分类搜索失败，请稍后再试</div>';
+            }
+        }
+
+        // 显示分类结果
+        function displayCategoryResults(result, category) {
+            const resultsDiv = document.getElementById('kb-search-results');
+
+            // 获取分类对应的图标
+            const categoryIcons = {
+                '疾病知识': 'fas fa-hospital',
+                '治疗护理': 'fas fa-pills',
+                '心理健康': 'fas fa-heart',
+                '营养指导': 'fas fa-apple-alt',
+                '家长支持': 'fas fa-users',
+                '生活指导': 'fas fa-home'
+            };
+
+            const icon = categoryIcons[category] || 'fas fa-folder';
+
+            let html = `
+                <div class="bg-green-50 p-3 rounded-lg mb-3 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-green-800">
+                            <i class="${icon} mr-2"></i>分类浏览：${category}
+                        </h4>
+                        <button onclick="document.getElementById('kb-search-results').classList.add('hidden')" class="text-green-400 hover:text-green-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="text-sm text-green-600">
+                        分类：${result.data.category} |
+                        内容数：${result.data.total} |
+                        搜索时间：${result.data.search_time}秒
+                    </div>
+                </div>
+            `;
+
+            if (result.success && result.data.results.length > 0) {
+                html += '<div class="space-y-3">';
+
+                result.data.results.forEach((item, index) => {
+                    html += `
+                        <div class="bg-white rounded-lg p-3 border border-green-200 hover:border-green-400 transition-colors cursor-pointer shadow-sm" onclick="useKnowledgeItem('${item.title}', '${escapeHtml(item.full_content || item.content)}')">
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="font-medium text-gray-800 text-sm">${item.title}</h5>
+                                <span class="text-xs bg-green-500 text-white px-2 py-1 rounded-full">${item.category}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2 leading-relaxed">${item.content}</p>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-500">
+                                    <i class="fas fa-folder mr-1"></i>分类内容
+                                </span>
+                                <span class="text-green-600">
+                                    <i class="fas fa-mouse-pointer mr-1"></i>点击查看详情
+                                </span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-2 flex items-center">
+                                <i class="fas fa-tags mr-1"></i>
+                                <span>关键词: ${item.keywords.join(', ')}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            } else {
+                html += '<div class="text-sm text-gray-500 p-4 bg-gray-50 rounded-lg text-center"><i class="fas fa-folder-open mr-2"></i>该分类下暂无内容</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // HTML转义函数
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // 使用知识库条目
+        function useKnowledgeItem(title, content) {
+            // 将知识库内容作为问题发送
+            const question = `请详细介绍：${title}`;
+            document.getElementById('message-input').value = question;
+
+            // 关闭知识库搜索界面
+            toggleKnowledgeSearch();
+
+            // 发送消息
+            sendMessage();
+        }
+
+        // 询问知识库相关问题
+        function askAboutKnowledge(title) {
+            const input = document.getElementById('message-input');
+            input.value = `请详细解释一下"${title}"相关的内容`;
+            input.focus();
+        }
+
+        // 快捷搜索函数
+        function quickSearch(query) {
+            document.getElementById('kb-search-input').value = query;
+            smartSearchKnowledge();
+        }
+
+        // 发送消息
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            const message = input.value.trim();
+
+            if (!message || isTyping) return;
+            
+            // 检查网络状态
+            if (!isOnline) {
+                showToast('网络连接已断开，请检查网络后重试', 'warning');
+                return;
+            }
+
+            // 禁用输入和按钮
+            input.disabled = true;
+            sendButton.disabled = true;
+            isTyping = true;
+
+            // 添加用户消息
+            addUserMessage(message);
+
+            // 清空输入框
+            input.value = '';
+            input.style.height = 'auto';
+
+            try {
+                // 添加AI思考指示器
+                addTypingIndicator();
+
+                // 添加超时控制
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+
+                // 调用AI API
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        context: '白血病AI关爱平台对话'
+                    }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                // 移除思考指示器
+                removeTypingIndicator();
+
+                // 添加AI回复
+                addAIMessage(data.answer, data.source);
+
+            } catch (error) {
+                console.error('发送消息失败:', error);
+                removeTypingIndicator();
+                
+                let errorMessage = '抱歉，我现在无法回复您的消息。请稍后再试，或联系我们的技术支持。';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage = '请求超时，请检查网络连接后重试';
+                } else if (!isOnline) {
+                    errorMessage = '网络连接已断开，请检查网络后重试';
+                }
+                
+                addAIMessage(errorMessage, '系统提示');
+            } finally {
+                // 重新启用输入和按钮
+                input.disabled = false;
+                sendButton.disabled = false;
+                isTyping = false;
+                input.focus();
+            }
+        }
+
+        // 添加用户消息
+        function addUserMessage(message) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'flex items-start space-x-3 justify-end animate-fade-in';
+
+            messageElement.innerHTML = `
+                <div class="message-user rounded-2xl rounded-tr-sm p-4 max-w-md text-right">
+                    <p class="text-sm">${escapeHtml(message)}</p>
+                    <p class="text-xs opacity-75 mt-1">${getCurrentTime()}</p>
+                </div>
+                <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user text-white text-sm"></i>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        // 添加AI消息
+        function addAIMessage(message, source = '小雪宝AI助手') {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'flex items-start space-x-3 animate-fade-in';
+
+            // 检查是否是知识库增强的回答
+            const isKnowledgeEnhanced = source.includes('知识库增强');
+            const knowledgeIcon = isKnowledgeEnhanced ? '<i class="fas fa-book text-primary text-xs mr-1"></i>' : '';
+
+            messageElement.innerHTML = `
+                <div class="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="message-ai rounded-2xl rounded-tl-sm p-4 max-w-md">
+                    ${isKnowledgeEnhanced ? '<div class="flex items-center mb-2 text-xs text-primary"><i class="fas fa-book mr-1"></i>基于专业知识库回答</div>' : ''}
+                    <p class="text-sm">${formatMessage(message)}</p>
+                    <p class="text-xs opacity-75 mt-1">${knowledgeIcon}${source} • ${getCurrentTime()}</p>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        // 添加思考指示器
+        function addTypingIndicator() {
+            const chatMessages = document.getElementById('chat-messages');
+            const typingElement = document.createElement('div');
+            typingElement.id = 'typing-indicator';
+            typingElement.className = 'flex items-start space-x-3 animate-fade-in';
+
+            typingElement.innerHTML = `
+                <div class="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot text-white text-sm"></i>
+                </div>
+                <div class="message-ai rounded-2xl rounded-tl-sm p-4">
+                    <div class="flex items-center space-x-1">
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+                        <span class="text-xs text-gray-500 ml-2">AI正在思考中...</span>
+                    </div>
+                </div>
+            `;
+
+            chatMessages.appendChild(typingElement);
+            scrollToBottom();
+        }
+
+        // 移除思考指示器
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // 清空聊天记录
+        function clearChat() {
+            const chatMessages = document.getElementById('chat-messages');
+            // 保留欢迎消息
+            const welcomeMessage = chatMessages.firstElementChild;
+            chatMessages.innerHTML = '';
+            chatMessages.appendChild(welcomeMessage);
+            messageCount = 0;
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chat-messages');
+            setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 100);
+        }
+
+        // 获取当前时间
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('zh-CN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // HTML转义
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 格式化消息（支持换行）
+        function formatMessage(text) {
+            return escapeHtml(text).replace(/\n/g, '<br>');
+        }
+
+        // 平滑滚动到指定元素
+        function smoothScrollTo(element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const isHidden = menu.classList.contains('hidden');
+            
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                menu.style.transform = 'translateY(0)';
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // 点击外部关闭移动端菜单
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (!menu.classList.contains('hidden') && 
+                !menu.contains(event.target) && 
+                !menuBtn.contains(event.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // 窗口大小变化时关闭移动端菜单
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // 移动端触摸优化
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeDistance = touchEndY - touchStartY;
+            
+            // 向下滑动关闭移动端菜单
+            if (swipeDistance > 50) {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            }
+        }
+
+        // 移动端输入框优化
+        function setupMobileInput() {
+            const input = document.getElementById('message-input');
+            
+            input.addEventListener('focus', function() {
+                // 在移动端聚焦时滚动到输入框
+                if (window.innerWidth < 768) {
+                    setTimeout(() => {
+                        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            });
+        }
+
+        // 页面加载完成后初始化移动端功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载指示器
+            setTimeout(() => {
+                const spinner = document.getElementById('loading-spinner');
+                if (spinner) {
+                    spinner.style.opacity = '0';
+                    setTimeout(() => spinner.remove(), 300);
+                }
+            }, 500);
+            
+            setupMobileInput();
+            initializePerformanceMonitoring();
+            checkServiceWorkerSupport();
+            initializeAnalytics();
+        });
+        
+        // 初始化分析工具
+        function initializeAnalytics() {
+            // 简单的页面访问统计
+            const pageViewData = {
+                page: window.location.pathname,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                screen: `${screen.width}x${screen.height}`,
+                language: navigator.language
+            };
+            
+            // 可以发送到分析服务
+            console.log('页面访问数据:', pageViewData);
+            
+            // 记录用户交互
+            document.addEventListener('click', (event) => {
+                const target = event.target;
+                if (target.tagName === 'BUTTON' || target.tagName === 'A') {
+                    console.log('用户交互:', {
+                        element: target.textContent.trim(),
+                        type: target.tagName,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+            });
+        }
+        
+        // 资源加载监控
+        function monitorResourceLoading() {
+            const resources = performance.getEntriesByType('resource');
+            resources.forEach(resource => {
+                if (resource.duration > 1000) { // 超过1秒的资源
+                    console.warn('慢资源加载:', resource.name, resource.duration + 'ms');
+                }
+            });
+        }
+        
+        // 核心Web指标监控
+        function monitorCoreWebVitals() {
+            // Largest Contentful Paint (LCP)
+            new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                const lastEntry = entries[entries.length - 1];
+                console.log('LCP:', lastEntry.startTime);
+            }).observe({ type: 'largest-contentful-paint', buffered: true });
+            
+            // First Input Delay (FID)
+            new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                entries.forEach(entry => {
+                    console.log('FID:', entry.processingStart - entry.startTime);
+                });
+            }).observe({ type: 'first-input', buffered: true });
+            
+            // Cumulative Layout Shift (CLS)
+            let clsValue = 0;
+            new PerformanceObserver((entryList) => {
+                entryList.getEntries().forEach(entry => {
+                    if (!entry.hadRecentInput) {
+                        clsValue += entry.value;
+                        console.log('CLS累计:', clsValue);
+                    }
+                });
+            }).observe({ type: 'layout-shift', buffered: true });
+        }
+        
+        // 性能监控
+        function initializePerformanceMonitoring() {
+            // 记录页面加载时间
+            window.addEventListener('load', () => {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log(`页面加载完成，耗时: ${loadTime}ms`);
+            });
+            
+            // 监控关键资源加载
+            const observer = new PerformanceObserver((list) => {
+                list.getEntries().forEach((entry) => {
+                    if (entry.entryType === 'navigation') {
+                        console.log('页面导航性能:', entry);
+                    }
+                });
+            });
+            observer.observe({ entryTypes: ['navigation'] });
+        }
+        
+        // Service Worker 支持检查
+        function checkServiceWorkerSupport() {
+            if ('serviceWorker' in navigator) {
+                // 注册Service Worker用于离线缓存
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker 注册成功:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker 注册失败:', error);
+                    });
+            }
+        }
+        
+        // 显示Toast通知
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const types = {
+                success: 'bg-success-500',
+                warning: 'bg-warning-500',
+                error: 'bg-error-500',
+                info: 'bg-primary-500'
+            };
+            
+            toast.className = `fixed top-4 right-4 z-50 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full ${types[type]}`;
+            toast.textContent = message;
+            toast.setAttribute('role', 'alert');
+            
+            document.body.appendChild(toast);
+            
+            // 动画进入
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // 自动消失
+            setTimeout(() => {
+                toast.style.transform = 'translateX(full)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 错误边界处理
+        window.addEventListener('error', (event) => {
+            console.error('全局错误:', event.error);
+            showToast('系统出现异常，请刷新页面重试', 'error');
+        });
+        
+        // 未处理的Promise拒绝
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('未处理的Promise拒绝:', event.reason);
+            showToast('系统出现异常，请刷新页面重试', 'error');
+        });
+        
+        // 图片懒加载
+        function initializeLazyLoading() {
+            const images = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+        }
+        
+        // 节流函数 - 性能优化
+        function throttle(func, delay) {
+            let timeoutId;
+            let lastExecTime = 0;
+            return function (...args) {
+                const currentTime = Date.now();
+                if (currentTime - lastExecTime > delay) {
+                    func.apply(this, args);
+                    lastExecTime = currentTime;
+                } else {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => {
+                        func.apply(this, args);
+                        lastExecTime = Date.now();
+                    }, delay - (currentTime - lastExecTime));
+                }
+            };
+        }
+        
+        // 防抖函数 - 性能优化
+        function debounce(func, delay) {
+            let timeoutId;
+            return function (...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+        
+        // 优化后的滚动处理
+        const throttledScroll = throttle(() => {
+            // 滚动时的性能优化逻辑
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            // 可以在这里添加视差效果或其他滚动相关优化
+        }, 16); // 约60fps
+        
+        window.addEventListener('scroll', throttledScroll, { passive: true });
+    </script>
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "小雪宝AI助手",
+        "description": "专业的白血病AI关爱平台，为白血病患儿及家属提供24小时AI智能问答、情绪识别分析和心理支持服务",
+        "url": "https://xiaoxuebao.ai",
+        "applicationCategory": "MedicalApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "小雪宝AI助手团队"
+        }
+    }
+    </script>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小雪宝AI助手 - AI功能测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">小雪宝AI助手 - AI功能测试</h1>
+        
+        <!-- AI聊天测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">🤖 AI聊天测试</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">输入问题：</label>
+                    <textarea id="chatInput" class="w-full p-3 border border-gray-300 rounded-md" rows="3" 
+                              placeholder="例如：我的孩子最近很焦虑，怎么办？"></textarea>
+                </div>
+                <button onclick="testChat()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    发送消息
+                </button>
+                <div id="chatResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                    <h3 class="font-semibold mb-2">AI回复：</h3>
+                    <div id="chatResponse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI情绪分析测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">😊 AI情绪分析测试</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">输入文本：</label>
+                    <textarea id="emotionInput" class="w-full p-3 border border-gray-300 rounded-md" rows="3" 
+                              placeholder="例如：我今天很担心，不知道治疗会不会疼"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">孩子年龄（可选）：</label>
+                    <input type="number" id="childAge" class="w-32 p-2 border border-gray-300 rounded-md" 
+                           placeholder="8" min="3" max="18">
+                </div>
+                <button onclick="testEmotion()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    分析情绪
+                </button>
+                <div id="emotionResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                    <h3 class="font-semibold mb-2">情绪分析结果：</h3>
+                    <div id="emotionResponse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 家长指导测试 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">👨‍👩‍👧‍👦 家长指导测试</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">孩子情绪状态：</label>
+                    <select id="emotionState" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option value="anxious">焦虑</option>
+                        <option value="sad">难过</option>
+                        <option value="angry">生气</option>
+                        <option value="happy">开心</option>
+                        <option value="calm">平静</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">孩子年龄：</label>
+                    <input type="number" id="parentAge" class="w-32 p-2 border border-gray-300 rounded-md" 
+                           value="8" min="3" max="18">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">情况描述（可选）：</label>
+                    <textarea id="situationContext" class="w-full p-3 border border-gray-300 rounded-md" rows="2" 
+                              placeholder="例如：孩子因为要做化疗而感到害怕"></textarea>
+                </div>
+                <button onclick="testParentGuidance()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                    获取指导
+                </button>
+                <div id="guidanceResult" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                    <h3 class="font-semibold mb-2">家长指导建议：</h3>
+                    <div id="guidanceResponse"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI聊天测试
+        async function testChat() {
+            const input = document.getElementById('chatInput').value;
+            const resultDiv = document.getElementById('chatResult');
+            const responseDiv = document.getElementById('chatResponse');
+            
+            if (!input.trim()) {
+                alert('请输入问题');
+                return;
+            }
+            
+            try {
+                responseDiv.innerHTML = '正在思考中...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: input,
+                        context: 'AI功能测试'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                responseDiv.innerHTML = `
+                    <div class="space-y-2">
+                        <p><strong>回答：</strong> ${data.answer}</p>
+                        <p><strong>来源：</strong> ${data.source}</p>
+                        <p><strong>置信度：</strong> ${(data.confidence * 100).toFixed(1)}%</p>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+
+        // AI情绪分析测试
+        async function testEmotion() {
+            const text = document.getElementById('emotionInput').value;
+            const age = document.getElementById('childAge').value;
+            const resultDiv = document.getElementById('emotionResult');
+            const responseDiv = document.getElementById('emotionResponse');
+            
+            if (!text.trim()) {
+                alert('请输入文本');
+                return;
+            }
+            
+            try {
+                responseDiv.innerHTML = '正在分析中...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch('/api/v1/mental-health/emotion/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text_data: text,
+                        child_age: age ? parseInt(age) : null
+                    })
+                });
+                
+                const result = await response.json();
+                const data = result.data;
+                
+                responseDiv.innerHTML = `
+                    <div class="space-y-3">
+                        <p><strong>主要情绪：</strong> ${data.primary_emotion}</p>
+                        <p><strong>置信度：</strong> ${(data.confidence * 100).toFixed(1)}%</p>
+                        <p><strong>情绪强度：</strong> ${(data.intensity * 100).toFixed(1)}%</p>
+                        <p><strong>情绪倾向：</strong> ${data.sentiment_score ? data.sentiment_score.toFixed(2) : 'N/A'}</p>
+                        <p><strong>AI模型：</strong> ${data.ai_model}</p>
+                        ${data.emotional_keywords ? `<p><strong>情绪关键词：</strong> ${data.emotional_keywords.join(', ')}</p>` : ''}
+                        <div>
+                            <strong>建议：</strong>
+                            <ul class="list-disc list-inside mt-1">
+                                ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+
+        // 家长指导测试
+        async function testParentGuidance() {
+            const emotionState = document.getElementById('emotionState').value;
+            const age = document.getElementById('parentAge').value;
+            const context = document.getElementById('situationContext').value;
+            const resultDiv = document.getElementById('guidanceResult');
+            const responseDiv = document.getElementById('guidanceResponse');
+            
+            try {
+                responseDiv.innerHTML = '正在生成指导建议...';
+                resultDiv.classList.remove('hidden');
+                
+                const response = await fetch('/api/v1/mental-health/parent/guidance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        child_emotion_state: emotionState,
+                        child_age: parseInt(age),
+                        situation_context: context || null
+                    })
+                });
+                
+                const result = await response.json();
+                const data = result.data;
+                
+                responseDiv.innerHTML = `
+                    <div class="space-y-3">
+                        <h4 class="font-semibold">${data.title}</h4>
+                        <p><strong>情绪状态：</strong> ${data.child_emotion_state}</p>
+                        <p><strong>孩子年龄：</strong> ${data.child_age}岁</p>
+                        ${data.situation_context ? `<p><strong>情况描述：</strong> ${data.situation_context}</p>` : ''}
+                        
+                        <div>
+                            <strong>具体行动建议：</strong>
+                            <ul class="list-disc list-inside mt-1">
+                                ${data.specific_actions.map(action => `<li>${action}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <strong>可以这样说：</strong>
+                            <ul class="list-disc list-inside mt-1">
+                                ${data.what_to_say.map(say => `<li>"${say}"</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <strong>避免说：</strong>
+                            <ul class="list-disc list-inside mt-1">
+                                ${data.what_not_to_say.map(avoid => `<li>${avoid}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <p><strong>后续观察：</strong> ${data.follow_up_timeline}</p>
+                        <p><strong>紧急程度：</strong> ${data.urgency_level}</p>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `<p class="text-red-500">错误：${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1518,38 +1518,26 @@
             const messageInput = document.querySelector('#message-input');
             const sendButton = document.querySelector('#send-button');
 
-            // 调用Qwen/Qwen3-8B模型API获取回答
+            // 调用本地AI助手API获取回答
             async function callQwenModel(question) {
                 try {
                     // 添加"思考中"状态
                     addTypingIndicator();
-                     
-                    // 构建API请求 - 添加调试信息
-                    console.log('开始调用Qwen模型API');
-                    console.log('请求URL:', 'https://cloud.siliconflow.cn/api/v1/chat/completions');
-                    
+
+                    // 构建本地API请求
+                    console.log('开始调用本地AI助手API');
+                    console.log('请求URL:', '/api/chat');
+
                     let response;
                     try {
-                        response = await fetch('https://cloud.siliconflow.cn/api/v1/chat/completions', {
+                        response = await fetch('/api/chat', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer sk-hclwuosimfqpztfimjagookkkpbcqianfcihthgsvasynbrv'
+                                'Content-Type': 'application/json'
                             },
                             body: JSON.stringify({
-                                model: 'Qwen/Qwen3-8B',
-                                messages: [
-                                    {
-                                        role: 'system',
-                                        content: '你是小雪宝AI助手，专注于白血病知识解答和支持。请结合知识库内容，用通俗易懂的语言回答用户问题。如果涉及医疗建议，请提醒用户咨询专业医生。'
-                                    },
-                                    {
-                                        role: 'user',
-                                        content: question
-                                    }
-                                ],
-                                max_tokens: 1024,
-                                temperature: 0.7
+                                message: question,
+                                context: '白血病知识咨询'
                             })
                         });
 
@@ -1557,32 +1545,28 @@
                         removeTypingIndicator();
 
                     } catch (fetchError) {
-                        console.error('Fetch请求失败:', fetchError);
-                        // 尝试使用备用API调用方式
-                        console.log('尝试使用备用方法获取回答');
+                        console.error('本地API请求失败:', fetchError);
+                        // 使用备用回答
+                        console.log('使用备用回答方法');
                         removeTypingIndicator();
                         return getFallbackAnswer(question);
                     }
 
                     if (!response.ok) {
-                        console.error('API返回非成功状态码:', response.status);
-                        // 打印响应头信息用于调试
-                        console.log('响应头:', Array.from(response.headers.entries()));
+                        console.error('本地API返回非成功状态码:', response.status);
                         // 当API失败时，使用知识库回答作为备用
                         return getFallbackAnswer(question);
                     }
 
                     const data = await response.json();
-                    console.log('API响应数据:', data);
-                    
-                    // 从响应中提取回答内容
-                    const answer = data.choices && data.choices[0] && data.choices[0].message ? 
-                                 data.choices[0].message.content : 
-                                 "无法获取回答内容，请稍后再试。";
-                     
+                    console.log('本地API响应数据:', data);
+
+                    // 从本地API响应中提取回答内容
+                    const answer = data.answer || "无法获取回答内容，请稍后再试。";
+
                     return {
                         answer: answer,
-                        source: "Qwen/Qwen3-8B模型"
+                        source: data.source || "小雪宝AI助手"
                     };
                 } catch (error) {
                     console.error('调用Qwen模型失败:', error);

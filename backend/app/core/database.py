@@ -5,13 +5,21 @@ from sqlalchemy.pool import NullPool
 from app.core.config import settings
 
 # 创建异步数据库引擎
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=settings.DEBUG,
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
-    poolclass=NullPool if "sqlite" in settings.DATABASE_URL else None
-)
+if "sqlite" in settings.DATABASE_URL:
+    # SQLite 不支持连接池参数
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=settings.DEBUG,
+        poolclass=NullPool
+    )
+else:
+    # 其他数据库支持连接池
+    engine = create_async_engine(
+        settings.DATABASE_URL,
+        echo=settings.DEBUG,
+        pool_size=settings.DATABASE_POOL_SIZE,
+        max_overflow=settings.DATABASE_MAX_OVERFLOW
+    )
 
 # 创建异步会话工厂
 AsyncSessionLocal = sessionmaker(
